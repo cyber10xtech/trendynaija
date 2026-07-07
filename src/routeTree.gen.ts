@@ -21,6 +21,7 @@ import { Route as AuthenticatedNewsRouteImport } from './routes/_authenticated/n
 import { Route as AuthenticatedHashtagsRouteImport } from './routes/_authenticated/hashtags'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAiInsightsRouteImport } from './routes/_authenticated/ai-insights'
+import { Route as ApiPublicHooksIngestRouteImport } from './routes/api/public/hooks/ingest'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -82,6 +83,11 @@ const AuthenticatedAiInsightsRoute = AuthenticatedAiInsightsRouteImport.update({
   path: '/ai-insights',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiPublicHooksIngestRoute = ApiPublicHooksIngestRouteImport.update({
+  id: '/api/public/hooks/ingest',
+  path: '/api/public/hooks/ingest',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/states': typeof AuthenticatedStatesRoute
   '/topics': typeof AuthenticatedTopicsRoute
   '/trending': typeof AuthenticatedTrendingRoute
+  '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/states': typeof AuthenticatedStatesRoute
   '/topics': typeof AuthenticatedTopicsRoute
   '/trending': typeof AuthenticatedTrendingRoute
+  '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/_authenticated/states': typeof AuthenticatedStatesRoute
   '/_authenticated/topics': typeof AuthenticatedTopicsRoute
   '/_authenticated/trending': typeof AuthenticatedTrendingRoute
+  '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -138,6 +147,7 @@ export interface FileRouteTypes {
     | '/states'
     | '/topics'
     | '/trending'
+    | '/api/public/hooks/ingest'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
     | '/states'
     | '/topics'
     | '/trending'
+    | '/api/public/hooks/ingest'
   id:
     | '__root__'
     | '/'
@@ -165,12 +176,14 @@ export interface FileRouteTypes {
     | '/_authenticated/states'
     | '/_authenticated/topics'
     | '/_authenticated/trending'
+    | '/api/public/hooks/ingest'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ApiPublicHooksIngestRoute: typeof ApiPublicHooksIngestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -259,6 +272,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAiInsightsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/hooks/ingest': {
+      id: '/api/public/hooks/ingest'
+      path: '/api/public/hooks/ingest'
+      fullPath: '/api/public/hooks/ingest'
+      preLoaderRoute: typeof ApiPublicHooksIngestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -293,6 +313,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ApiPublicHooksIngestRoute: ApiPublicHooksIngestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

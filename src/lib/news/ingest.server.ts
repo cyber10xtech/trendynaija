@@ -52,7 +52,7 @@ async function logProvider(
     job_id: jobId,
     level,
     message,
-    metadata,
+    metadata: metadata as never,
   });
 }
 
