@@ -21,6 +21,9 @@ import { Route as AuthenticatedNewsRouteImport } from './routes/_authenticated/n
 import { Route as AuthenticatedHashtagsRouteImport } from './routes/_authenticated/hashtags'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAiInsightsRouteImport } from './routes/_authenticated/ai-insights'
+import { Route as AuthenticatedNewsIdRouteImport } from './routes/_authenticated/news.$id'
+import { Route as ApiPublicHooksIngestRouteImport } from './routes/api/public/hooks/ingest'
+import { Route as AuthenticatedNewsClusterIdRouteImport } from './routes/_authenticated/news.cluster.$id'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -82,6 +85,22 @@ const AuthenticatedAiInsightsRoute = AuthenticatedAiInsightsRouteImport.update({
   path: '/ai-insights',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedNewsIdRoute = AuthenticatedNewsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedNewsRoute,
+} as any)
+const ApiPublicHooksIngestRoute = ApiPublicHooksIngestRouteImport.update({
+  id: '/api/public/hooks/ingest',
+  path: '/api/public/hooks/ingest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedNewsClusterIdRoute =
+  AuthenticatedNewsClusterIdRouteImport.update({
+    id: '/cluster/$id',
+    path: '/cluster/$id',
+    getParentRoute: () => AuthenticatedNewsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -89,12 +108,15 @@ export interface FileRoutesByFullPath {
   '/ai-insights': typeof AuthenticatedAiInsightsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/hashtags': typeof AuthenticatedHashtagsRoute
-  '/news': typeof AuthenticatedNewsRoute
+  '/news': typeof AuthenticatedNewsRouteWithChildren
   '/provider-health': typeof AuthenticatedProviderHealthRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/states': typeof AuthenticatedStatesRoute
   '/topics': typeof AuthenticatedTopicsRoute
   '/trending': typeof AuthenticatedTrendingRoute
+  '/news/$id': typeof AuthenticatedNewsIdRoute
+  '/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
+  '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -102,12 +124,15 @@ export interface FileRoutesByTo {
   '/ai-insights': typeof AuthenticatedAiInsightsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/hashtags': typeof AuthenticatedHashtagsRoute
-  '/news': typeof AuthenticatedNewsRoute
+  '/news': typeof AuthenticatedNewsRouteWithChildren
   '/provider-health': typeof AuthenticatedProviderHealthRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/states': typeof AuthenticatedStatesRoute
   '/topics': typeof AuthenticatedTopicsRoute
   '/trending': typeof AuthenticatedTrendingRoute
+  '/news/$id': typeof AuthenticatedNewsIdRoute
+  '/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
+  '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -117,12 +142,15 @@ export interface FileRoutesById {
   '/_authenticated/ai-insights': typeof AuthenticatedAiInsightsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/hashtags': typeof AuthenticatedHashtagsRoute
-  '/_authenticated/news': typeof AuthenticatedNewsRoute
+  '/_authenticated/news': typeof AuthenticatedNewsRouteWithChildren
   '/_authenticated/provider-health': typeof AuthenticatedProviderHealthRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/states': typeof AuthenticatedStatesRoute
   '/_authenticated/topics': typeof AuthenticatedTopicsRoute
   '/_authenticated/trending': typeof AuthenticatedTrendingRoute
+  '/_authenticated/news/$id': typeof AuthenticatedNewsIdRoute
+  '/_authenticated/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
+  '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -138,6 +166,9 @@ export interface FileRouteTypes {
     | '/states'
     | '/topics'
     | '/trending'
+    | '/news/$id'
+    | '/news/cluster/$id'
+    | '/api/public/hooks/ingest'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -151,6 +182,9 @@ export interface FileRouteTypes {
     | '/states'
     | '/topics'
     | '/trending'
+    | '/news/$id'
+    | '/news/cluster/$id'
+    | '/api/public/hooks/ingest'
   id:
     | '__root__'
     | '/'
@@ -165,12 +199,16 @@ export interface FileRouteTypes {
     | '/_authenticated/states'
     | '/_authenticated/topics'
     | '/_authenticated/trending'
+    | '/_authenticated/news/$id'
+    | '/_authenticated/news/cluster/$id'
+    | '/api/public/hooks/ingest'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ApiPublicHooksIngestRoute: typeof ApiPublicHooksIngestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -259,14 +297,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAiInsightsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/news/$id': {
+      id: '/_authenticated/news/$id'
+      path: '/$id'
+      fullPath: '/news/$id'
+      preLoaderRoute: typeof AuthenticatedNewsIdRouteImport
+      parentRoute: typeof AuthenticatedNewsRoute
+    }
+    '/api/public/hooks/ingest': {
+      id: '/api/public/hooks/ingest'
+      path: '/api/public/hooks/ingest'
+      fullPath: '/api/public/hooks/ingest'
+      preLoaderRoute: typeof ApiPublicHooksIngestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/news/cluster/$id': {
+      id: '/_authenticated/news/cluster/$id'
+      path: '/cluster/$id'
+      fullPath: '/news/cluster/$id'
+      preLoaderRoute: typeof AuthenticatedNewsClusterIdRouteImport
+      parentRoute: typeof AuthenticatedNewsRoute
+    }
   }
 }
+
+interface AuthenticatedNewsRouteChildren {
+  AuthenticatedNewsIdRoute: typeof AuthenticatedNewsIdRoute
+  AuthenticatedNewsClusterIdRoute: typeof AuthenticatedNewsClusterIdRoute
+}
+
+const AuthenticatedNewsRouteChildren: AuthenticatedNewsRouteChildren = {
+  AuthenticatedNewsIdRoute: AuthenticatedNewsIdRoute,
+  AuthenticatedNewsClusterIdRoute: AuthenticatedNewsClusterIdRoute,
+}
+
+const AuthenticatedNewsRouteWithChildren =
+  AuthenticatedNewsRoute._addFileChildren(AuthenticatedNewsRouteChildren)
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAiInsightsRoute: typeof AuthenticatedAiInsightsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedHashtagsRoute: typeof AuthenticatedHashtagsRoute
-  AuthenticatedNewsRoute: typeof AuthenticatedNewsRoute
+  AuthenticatedNewsRoute: typeof AuthenticatedNewsRouteWithChildren
   AuthenticatedProviderHealthRoute: typeof AuthenticatedProviderHealthRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedStatesRoute: typeof AuthenticatedStatesRoute
@@ -278,7 +350,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAiInsightsRoute: AuthenticatedAiInsightsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedHashtagsRoute: AuthenticatedHashtagsRoute,
-  AuthenticatedNewsRoute: AuthenticatedNewsRoute,
+  AuthenticatedNewsRoute: AuthenticatedNewsRouteWithChildren,
   AuthenticatedProviderHealthRoute: AuthenticatedProviderHealthRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedStatesRoute: AuthenticatedStatesRoute,
@@ -293,6 +365,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ApiPublicHooksIngestRoute: ApiPublicHooksIngestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

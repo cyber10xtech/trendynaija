@@ -17,35 +17,53 @@ export type Database = {
       ai_summaries: {
         Row: {
           bullet_points: Json | null
+          categories: Json | null
+          confidence: number | null
           created_at: string
+          detailed_summary: string | null
+          entities: Json | null
           id: string
           model: string | null
+          short_summary: string | null
           state_id: string | null
           subject_id: string
           subject_type: string
           summary: string
+          topics: Json | null
           updated_at: string
         }
         Insert: {
           bullet_points?: Json | null
+          categories?: Json | null
+          confidence?: number | null
           created_at?: string
+          detailed_summary?: string | null
+          entities?: Json | null
           id?: string
           model?: string | null
+          short_summary?: string | null
           state_id?: string | null
           subject_id: string
           subject_type: string
           summary: string
+          topics?: Json | null
           updated_at?: string
         }
         Update: {
           bullet_points?: Json | null
+          categories?: Json | null
+          confidence?: number | null
           created_at?: string
+          detailed_summary?: string | null
+          entities?: Json | null
           id?: string
           model?: string | null
+          short_summary?: string | null
           state_id?: string | null
           subject_id?: string
           subject_type?: string
           summary?: string
+          topics?: Json | null
           updated_at?: string
         }
         Relationships: [
@@ -61,9 +79,12 @@ export type Database = {
       article_clusters: {
         Row: {
           article_count: number
+          canonical_article_id: string | null
+          category: string | null
           created_at: string
           first_seen_at: string | null
           id: string
+          image_url: string | null
           last_seen_at: string | null
           state_id: string | null
           summary: string | null
@@ -73,9 +94,12 @@ export type Database = {
         }
         Insert: {
           article_count?: number
+          canonical_article_id?: string | null
+          category?: string | null
           created_at?: string
           first_seen_at?: string | null
           id?: string
+          image_url?: string | null
           last_seen_at?: string | null
           state_id?: string | null
           summary?: string | null
@@ -85,9 +109,12 @@ export type Database = {
         }
         Update: {
           article_count?: number
+          canonical_article_id?: string | null
+          category?: string | null
           created_at?: string
           first_seen_at?: string | null
           id?: string
+          image_url?: string | null
           last_seen_at?: string | null
           state_id?: string | null
           summary?: string | null
@@ -96,6 +123,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "article_clusters_canonical_article_id_fkey"
+            columns: ["canonical_article_id"]
+            isOneToOne: false
+            referencedRelation: "news_articles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "article_clusters_state_id_fkey"
             columns: ["state_id"]
@@ -232,6 +266,7 @@ export type Database = {
       news_articles: {
         Row: {
           author: string | null
+          category: string | null
           cluster_id: string | null
           content: string | null
           content_hash: string | null
@@ -243,12 +278,14 @@ export type Database = {
           published_at: string | null
           source_id: string | null
           state_id: string | null
+          summary: string | null
           title: string
           updated_at: string
           url: string
         }
         Insert: {
           author?: string | null
+          category?: string | null
           cluster_id?: string | null
           content?: string | null
           content_hash?: string | null
@@ -260,12 +297,14 @@ export type Database = {
           published_at?: string | null
           source_id?: string | null
           state_id?: string | null
+          summary?: string | null
           title: string
           updated_at?: string
           url: string
         }
         Update: {
           author?: string | null
+          category?: string | null
           cluster_id?: string | null
           content?: string | null
           content_hash?: string | null
@@ -277,6 +316,7 @@ export type Database = {
           published_at?: string | null
           source_id?: string | null
           state_id?: string | null
+          summary?: string | null
           title?: string
           updated_at?: string
           url?: string
@@ -770,6 +810,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
       app_role: "admin" | "analyst" | "viewer"
