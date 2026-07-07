@@ -71,12 +71,14 @@ async function loadRecentClusterCandidates(): Promise<ClusterCandidate[]> {
     .order("last_seen_at", { ascending: false })
     .limit(500);
   if (error) throw error;
-  return (data ?? []).map((c) => ({
-    id: c.id,
-    title: c.title,
-    tokens: new Set(tokenize(c.title)),
-    lastSeenAt: c.last_seen_at,
-  }));
+  return (data ?? [])
+    .filter((c): c is { id: string; title: string; last_seen_at: string } => !!c.last_seen_at)
+    .map((c) => ({
+      id: c.id,
+      title: c.title,
+      tokens: new Set(tokenize(c.title)),
+      lastSeenAt: c.last_seen_at,
+    }));
 }
 
 async function ingestSource(source: SourceRow): Promise<IngestReport> {
