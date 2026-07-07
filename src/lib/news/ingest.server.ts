@@ -147,15 +147,6 @@ async function ingestSource(source: SourceRow): Promise<IngestReport> {
       const nowIso = new Date().toISOString();
       if (matched) {
         clusterId = matched.id;
-        await supabaseAdmin
-          .from("article_clusters")
-          .update({
-            last_seen_at: publishedAt ?? nowIso,
-            article_count: undefined,
-          })
-          .eq("id", matched.id);
-        // increment article_count via RPC-style select-update
-        await supabaseAdmin.rpc("noop_placeholder" as never).catch(() => {});
         const { data: cc } = await supabaseAdmin
           .from("article_clusters")
           .select("article_count")
@@ -163,7 +154,10 @@ async function ingestSource(source: SourceRow): Promise<IngestReport> {
           .single();
         await supabaseAdmin
           .from("article_clusters")
-          .update({ article_count: (cc?.article_count ?? 0) + 1 })
+          .update({
+            last_seen_at: publishedAt ?? nowIso,
+            article_count: (cc?.article_count ?? 0) + 1,
+          })
           .eq("id", matched.id);
         report.clustersUpdated++;
       } else {
@@ -185,7 +179,7 @@ async function ingestSource(source: SourceRow): Promise<IngestReport> {
           id: clusterId,
           title: newCluster.title,
           tokens: new Set(tokenize(newCluster.title)),
-          lastSeenAt: newCluster.last_seen_at,
+          lastSeenAt: newCluster.last_seen_at ?? nowIso,
         });
         report.clustersCreated++;
       }
