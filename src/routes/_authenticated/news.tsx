@@ -60,7 +60,7 @@ function NewsPage() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              navigate({ search: (prev) => ({ ...prev, q: term || undefined, view: "articles" }) });
+              navigate({ search: (prev: NewsSearch) => ({ ...prev, q: term || undefined, view: "articles" as const }) });
             }}
             className="relative flex-1"
           >
@@ -74,7 +74,7 @@ function NewsPage() {
           </form>
           <div className="flex gap-2 overflow-x-auto">
             <button
-              onClick={() => navigate({ search: (p) => ({ ...p, category: undefined }) })}
+              onClick={() => navigate({ search: (p: NewsSearch) => ({ ...p, category: undefined }) })}
               className={`px-3 py-1 rounded-full text-xs whitespace-nowrap ${!category ? "bg-primary text-primary-foreground" : "bg-muted"}`}
             >
               All
@@ -82,7 +82,7 @@ function NewsPage() {
             {NEWS_CATEGORIES.slice(0, 8).map((c) => (
               <button
                 key={c}
-                onClick={() => navigate({ search: (p) => ({ ...p, category: c }) })}
+                onClick={() => navigate({ search: (p: NewsSearch) => ({ ...p, category: c }) })}
                 className={`px-3 py-1 rounded-full text-xs whitespace-nowrap ${category === c ? "bg-primary text-primary-foreground" : "bg-muted"}`}
               >
                 {c}
