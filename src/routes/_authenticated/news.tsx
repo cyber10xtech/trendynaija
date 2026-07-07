@@ -8,7 +8,7 @@ import { Widget, EmptyState } from "@/components/widget";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { listLatestClusters, listArticles } from "@/lib/news/news.functions";
-import { NEWS_CATEGORIES } from "@/lib/news/categorize.server";
+import { NEWS_CATEGORIES } from "@/lib/news/categories";
 import { formatDistanceToNow } from "date-fns";
 
 interface NewsSearch {

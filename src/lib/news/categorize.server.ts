@@ -3,26 +3,9 @@
  * The AI stage can override with a stronger classification later.
  */
 
-export const NEWS_CATEGORIES = [
-  "Politics",
-  "Business",
-  "Technology",
-  "Sports",
-  "Entertainment",
-  "Education",
-  "Health",
-  "Crime",
-  "Religion",
-  "Government",
-  "Economy",
-  "Lifestyle",
-  "Environment",
-  "Weather",
-  "Infrastructure",
-  "Other",
-] as const;
+import { NEWS_CATEGORIES, type NewsCategory } from "./categories";
+export { NEWS_CATEGORIES, type NewsCategory };
 
-export type NewsCategory = (typeof NEWS_CATEGORIES)[number];
 
 const RULES: Array<[NewsCategory, RegExp]> = [
   ["Sports", /\b(football|soccer|super eagles|nff|npfl|match|tournament|league|goal|coach|striker|nba|premier league|afcon|olympi|world cup|boxing|athletics)\b/i],
