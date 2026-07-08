@@ -84,13 +84,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Discover what Nigeria is talking about. AI-powered trend intelligence starting with Imo State." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Trendy Naija — Nigeria's AI Trend Intelligence Platform" },
+      { name: "twitter:description", content: "Discover what Nigeria is talking about. AI-powered trend intelligence starting with Imo State." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/HtjhNulYM4PMZG4ZqKSw8wfVFlg1/social-images/social-1783503990219-3e80f0e2-b75a-4c7d-9511-290a7fa5fa08.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/HtjhNulYM4PMZG4ZqKSw8wfVFlg1/social-images/social-1783503990219-3e80f0e2-b75a-4c7d-9511-290a7fa5fa08.webp" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
   shellComponent: RootShell,
