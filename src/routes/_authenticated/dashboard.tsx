@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { TrendingUp, Newspaper, Sparkles, Tags, Activity, Zap } from "lucide-react";
+import { TrendingUp, Newspaper, Sparkles, Tags, Activity, Zap, Search, Flame } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import { Widget, EmptyState } from "@/components/widget";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +10,7 @@ import {
   listLatestClusters,
   listProvidersHealth,
 } from "@/lib/news/news.functions";
+import { listTrendingSearches, trendsDashboardStats } from "@/lib/trends/trends.functions";
 import { formatDistanceToNow } from "date-fns";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -26,8 +27,13 @@ function Dashboard() {
   const statsFn = useServerFn(dashboardStats);
   const clustersFn = useServerFn(listLatestClusters);
   const providersFn = useServerFn(listProvidersHealth);
+  const trendingFn = useServerFn(listTrendingSearches);
+  const trendsStatsFn = useServerFn(trendsDashboardStats);
 
   const stats = useQuery({ queryKey: ["dashboard-stats"], queryFn: () => statsFn() });
+  const trends = useQuery({ queryKey: ["trends-stats"], queryFn: () => trendsStatsFn() });
+  const trendingNG = useQuery({ queryKey: ["dash-trending", "NG"], queryFn: () => trendingFn({ data: { regionCode: "NG", limit: 8 } }) });
+  const trendingIM = useQuery({ queryKey: ["dash-trending", "NG-IM"], queryFn: () => trendingFn({ data: { regionCode: "NG-IM", limit: 8 } }) });
   const clusters = useQuery({
     queryKey: ["latest-clusters", 6],
     queryFn: () => clustersFn({ data: { limit: 6 } }),
