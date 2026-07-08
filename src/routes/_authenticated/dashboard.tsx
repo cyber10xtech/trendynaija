@@ -49,6 +49,38 @@ function Dashboard() {
       actions={<Badge variant="secondary" className="rounded-full">Imo State · Live</Badge>}
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <Widget title="Google Trends · Nigeria" subtitle={trends.data?.lastSyncAt ? `Last sync ${formatDistanceToNow(new Date(trends.data.lastSyncAt))} ago` : "Not synced yet"} action={<Link to="/trending" className="text-xs text-primary hover:underline">See all →</Link>}>
+          {trendingNG.data && trendingNG.data.length > 0 ? (
+            <ol className="space-y-1.5">
+              {trendingNG.data.slice(0, 8).map((t, i) => (
+                <li key={t.id} className="flex items-center gap-2 text-sm">
+                  <span className="w-4 text-muted-foreground text-xs tabular-nums">{i + 1}</span>
+                  {t.topics ? (
+                    <Link to="/topics/$slug" params={{ slug: t.topics.slug }} className="truncate hover:text-primary">{t.keyword}</Link>
+                  ) : <span className="truncate">{t.keyword}</span>}
+                  {t.traffic && <span className="ml-auto text-[10px] text-muted-foreground">{t.traffic}</span>}
+                </li>
+              ))}
+            </ol>
+          ) : <EmptyState icon={<Search className="w-5 h-5 text-muted-foreground" />} title="No Google Trends yet" description="Open Trending and click Sync now." />}
+        </Widget>
+
+        <Widget title="Google Trends · Imo" subtitle="State-level trending searches" action={<Link to="/trending" className="text-xs text-primary hover:underline">See all →</Link>}>
+          {trendingIM.data && trendingIM.data.length > 0 ? (
+            <ol className="space-y-1.5">
+              {trendingIM.data.slice(0, 8).map((t, i) => (
+                <li key={t.id} className="flex items-center gap-2 text-sm">
+                  <Flame className="w-3 h-3 text-primary flex-shrink-0" />
+                  {t.topics ? (
+                    <Link to="/topics/$slug" params={{ slug: t.topics.slug }} className="truncate hover:text-primary">{t.keyword}</Link>
+                  ) : <span className="truncate">{t.keyword}</span>}
+                </li>
+              ))}
+            </ol>
+          ) : <EmptyState icon={<Search className="w-5 h-5 text-muted-foreground" />} title="Imo trends coming soon" description={`${trends.data?.activeRegions ?? 0} regions active`} />}
+        </Widget>
+
+
         <Widget title="Breaking Story" subtitle="Highest-coverage cluster right now" className="lg:col-span-2">
           {breaking ? (
             <Link to="/news/cluster/$id" params={{ id: breaking.id }} className="block group">
