@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { TrendingUp, Newspaper, Sparkles, Tags, Activity, Zap } from "lucide-react";
+import { TrendingUp, Newspaper, Sparkles, Tags, Activity, Zap, Search, Flame } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import { Widget, EmptyState } from "@/components/widget";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +10,7 @@ import {
   listLatestClusters,
   listProvidersHealth,
 } from "@/lib/news/news.functions";
+import { listTrendingSearches, trendsDashboardStats } from "@/lib/trends/trends.functions";
 import { formatDistanceToNow } from "date-fns";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -26,8 +27,13 @@ function Dashboard() {
   const statsFn = useServerFn(dashboardStats);
   const clustersFn = useServerFn(listLatestClusters);
   const providersFn = useServerFn(listProvidersHealth);
+  const trendingFn = useServerFn(listTrendingSearches);
+  const trendsStatsFn = useServerFn(trendsDashboardStats);
 
   const stats = useQuery({ queryKey: ["dashboard-stats"], queryFn: () => statsFn() });
+  const trends = useQuery({ queryKey: ["trends-stats"], queryFn: () => trendsStatsFn() });
+  const trendingNG = useQuery({ queryKey: ["dash-trending", "NG"], queryFn: () => trendingFn({ data: { regionCode: "NG", limit: 8 } }) });
+  const trendingIM = useQuery({ queryKey: ["dash-trending", "NG-IM"], queryFn: () => trendingFn({ data: { regionCode: "NG-IM", limit: 8 } }) });
   const clusters = useQuery({
     queryKey: ["latest-clusters", 6],
     queryFn: () => clustersFn({ data: { limit: 6 } }),
@@ -43,6 +49,38 @@ function Dashboard() {
       actions={<Badge variant="secondary" className="rounded-full">Imo State · Live</Badge>}
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <Widget title="Google Trends · Nigeria" subtitle={trends.data?.lastSyncAt ? `Last sync ${formatDistanceToNow(new Date(trends.data.lastSyncAt))} ago` : "Not synced yet"} action={<Link to="/trending" className="text-xs text-primary hover:underline">See all →</Link>}>
+          {trendingNG.data && trendingNG.data.length > 0 ? (
+            <ol className="space-y-1.5">
+              {trendingNG.data.slice(0, 8).map((t, i) => (
+                <li key={t.id} className="flex items-center gap-2 text-sm">
+                  <span className="w-4 text-muted-foreground text-xs tabular-nums">{i + 1}</span>
+                  {t.topics ? (
+                    <Link to="/topics/$slug" params={{ slug: t.topics.slug }} className="truncate hover:text-primary">{t.keyword}</Link>
+                  ) : <span className="truncate">{t.keyword}</span>}
+                  {t.traffic && <span className="ml-auto text-[10px] text-muted-foreground">{t.traffic}</span>}
+                </li>
+              ))}
+            </ol>
+          ) : <EmptyState icon={<Search className="w-5 h-5 text-muted-foreground" />} title="No Google Trends yet" description="Open Trending and click Sync now." />}
+        </Widget>
+
+        <Widget title="Google Trends · Imo" subtitle="State-level trending searches" action={<Link to="/trending" className="text-xs text-primary hover:underline">See all →</Link>}>
+          {trendingIM.data && trendingIM.data.length > 0 ? (
+            <ol className="space-y-1.5">
+              {trendingIM.data.slice(0, 8).map((t, i) => (
+                <li key={t.id} className="flex items-center gap-2 text-sm">
+                  <Flame className="w-3 h-3 text-primary flex-shrink-0" />
+                  {t.topics ? (
+                    <Link to="/topics/$slug" params={{ slug: t.topics.slug }} className="truncate hover:text-primary">{t.keyword}</Link>
+                  ) : <span className="truncate">{t.keyword}</span>}
+                </li>
+              ))}
+            </ol>
+          ) : <EmptyState icon={<Search className="w-5 h-5 text-muted-foreground" />} title="Imo trends coming soon" description={`${trends.data?.activeRegions ?? 0} regions active`} />}
+        </Widget>
+
+
         <Widget title="Breaking Story" subtitle="Highest-coverage cluster right now" className="lg:col-span-2">
           {breaking ? (
             <Link to="/news/cluster/$id" params={{ id: breaking.id }} className="block group">

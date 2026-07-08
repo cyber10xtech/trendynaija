@@ -146,6 +146,66 @@ export type Database = {
           },
         ]
       }
+      google_trends: {
+        Row: {
+          articles: Json
+          created_at: string
+          id: string
+          keyword: string
+          rank: number | null
+          raw: Json
+          region_id: string
+          slug: string
+          snapshot_at: string
+          topic_id: string | null
+          traffic: string | null
+          traffic_value: number | null
+        }
+        Insert: {
+          articles?: Json
+          created_at?: string
+          id?: string
+          keyword: string
+          rank?: number | null
+          raw?: Json
+          region_id: string
+          slug: string
+          snapshot_at?: string
+          topic_id?: string | null
+          traffic?: string | null
+          traffic_value?: number | null
+        }
+        Update: {
+          articles?: Json
+          created_at?: string
+          id?: string
+          keyword?: string
+          rank?: number | null
+          raw?: Json
+          region_id?: string
+          slug?: string
+          snapshot_at?: string
+          topic_id?: string | null
+          traffic?: string | null
+          traffic_value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "google_trends_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "trend_regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "google_trends_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       hashtags: {
         Row: {
           created_at: string
@@ -224,6 +284,54 @@ export type Database = {
             columns: ["source_id"]
             isOneToOne: false
             referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interest_over_time: {
+        Row: {
+          created_at: string
+          id: string
+          keyword: string
+          region_id: string
+          source: string
+          topic_id: string | null
+          ts: string
+          value: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          keyword: string
+          region_id: string
+          source?: string
+          topic_id?: string | null
+          ts: string
+          value: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          keyword?: string
+          region_id?: string
+          source?: string
+          topic_id?: string | null
+          ts?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interest_over_time_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "trend_regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interest_over_time_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
             referencedColumns: ["id"]
           },
         ]
@@ -451,6 +559,117 @@ export type Database = {
             columns: ["source_id"]
             isOneToOne: false
             referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      related_queries: {
+        Row: {
+          created_at: string
+          id: string
+          keyword: string
+          query: string
+          query_type: string
+          region_id: string
+          snapshot_at: string
+          topic_id: string | null
+          value: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          keyword: string
+          query: string
+          query_type: string
+          region_id: string
+          snapshot_at?: string
+          topic_id?: string | null
+          value?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          keyword?: string
+          query?: string
+          query_type?: string
+          region_id?: string
+          snapshot_at?: string
+          topic_id?: string | null
+          value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "related_queries_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "trend_regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "related_queries_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      related_topics: {
+        Row: {
+          category: string | null
+          created_at: string
+          id: string
+          keyword: string
+          region_id: string
+          related_name: string
+          related_slug: string
+          related_type: string | null
+          relation_kind: string
+          snapshot_at: string
+          strength: number | null
+          topic_id: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          keyword: string
+          region_id: string
+          related_name: string
+          related_slug: string
+          related_type?: string | null
+          relation_kind: string
+          snapshot_at?: string
+          strength?: number | null
+          topic_id?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          keyword?: string
+          region_id?: string
+          related_name?: string
+          related_slug?: string
+          related_type?: string | null
+          relation_kind?: string
+          snapshot_at?: string
+          strength?: number | null
+          topic_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "related_topics_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "trend_regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "related_topics_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
             referencedColumns: ["id"]
           },
         ]
@@ -694,6 +913,57 @@ export type Database = {
             columns: ["topic_id"]
             isOneToOne: false
             referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trend_regions: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          geo_code: string
+          id: string
+          lga_id: string | null
+          name: string
+          region_type: string
+          state_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          geo_code: string
+          id?: string
+          lga_id?: string | null
+          name: string
+          region_type: string
+          state_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          geo_code?: string
+          id?: string
+          lga_id?: string | null
+          name?: string
+          region_type?: string
+          state_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trend_regions_lga_id_fkey"
+            columns: ["lga_id"]
+            isOneToOne: false
+            referencedRelation: "lgas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trend_regions_state_id_fkey"
+            columns: ["state_id"]
+            isOneToOne: false
+            referencedRelation: "states"
             referencedColumns: ["id"]
           },
         ]

@@ -21,7 +21,9 @@ import { Route as AuthenticatedNewsRouteImport } from './routes/_authenticated/n
 import { Route as AuthenticatedHashtagsRouteImport } from './routes/_authenticated/hashtags'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAiInsightsRouteImport } from './routes/_authenticated/ai-insights'
+import { Route as AuthenticatedTopicsSlugRouteImport } from './routes/_authenticated/topics.$slug'
 import { Route as AuthenticatedNewsIdRouteImport } from './routes/_authenticated/news.$id'
+import { Route as ApiPublicHooksTrendsIngestRouteImport } from './routes/api/public/hooks/trends-ingest'
 import { Route as ApiPublicHooksIngestRouteImport } from './routes/api/public/hooks/ingest'
 import { Route as AuthenticatedNewsClusterIdRouteImport } from './routes/_authenticated/news.cluster.$id'
 
@@ -85,11 +87,22 @@ const AuthenticatedAiInsightsRoute = AuthenticatedAiInsightsRouteImport.update({
   path: '/ai-insights',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTopicsSlugRoute = AuthenticatedTopicsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => AuthenticatedTopicsRoute,
+} as any)
 const AuthenticatedNewsIdRoute = AuthenticatedNewsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => AuthenticatedNewsRoute,
 } as any)
+const ApiPublicHooksTrendsIngestRoute =
+  ApiPublicHooksTrendsIngestRouteImport.update({
+    id: '/api/public/hooks/trends-ingest',
+    path: '/api/public/hooks/trends-ingest',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicHooksIngestRoute = ApiPublicHooksIngestRouteImport.update({
   id: '/api/public/hooks/ingest',
   path: '/api/public/hooks/ingest',
@@ -112,11 +125,13 @@ export interface FileRoutesByFullPath {
   '/provider-health': typeof AuthenticatedProviderHealthRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/states': typeof AuthenticatedStatesRoute
-  '/topics': typeof AuthenticatedTopicsRoute
+  '/topics': typeof AuthenticatedTopicsRouteWithChildren
   '/trending': typeof AuthenticatedTrendingRoute
   '/news/$id': typeof AuthenticatedNewsIdRoute
+  '/topics/$slug': typeof AuthenticatedTopicsSlugRoute
   '/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
+  '/api/public/hooks/trends-ingest': typeof ApiPublicHooksTrendsIngestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -128,11 +143,13 @@ export interface FileRoutesByTo {
   '/provider-health': typeof AuthenticatedProviderHealthRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/states': typeof AuthenticatedStatesRoute
-  '/topics': typeof AuthenticatedTopicsRoute
+  '/topics': typeof AuthenticatedTopicsRouteWithChildren
   '/trending': typeof AuthenticatedTrendingRoute
   '/news/$id': typeof AuthenticatedNewsIdRoute
+  '/topics/$slug': typeof AuthenticatedTopicsSlugRoute
   '/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
+  '/api/public/hooks/trends-ingest': typeof ApiPublicHooksTrendsIngestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -146,11 +163,13 @@ export interface FileRoutesById {
   '/_authenticated/provider-health': typeof AuthenticatedProviderHealthRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/states': typeof AuthenticatedStatesRoute
-  '/_authenticated/topics': typeof AuthenticatedTopicsRoute
+  '/_authenticated/topics': typeof AuthenticatedTopicsRouteWithChildren
   '/_authenticated/trending': typeof AuthenticatedTrendingRoute
   '/_authenticated/news/$id': typeof AuthenticatedNewsIdRoute
+  '/_authenticated/topics/$slug': typeof AuthenticatedTopicsSlugRoute
   '/_authenticated/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
+  '/api/public/hooks/trends-ingest': typeof ApiPublicHooksTrendsIngestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -167,8 +186,10 @@ export interface FileRouteTypes {
     | '/topics'
     | '/trending'
     | '/news/$id'
+    | '/topics/$slug'
     | '/news/cluster/$id'
     | '/api/public/hooks/ingest'
+    | '/api/public/hooks/trends-ingest'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -183,8 +204,10 @@ export interface FileRouteTypes {
     | '/topics'
     | '/trending'
     | '/news/$id'
+    | '/topics/$slug'
     | '/news/cluster/$id'
     | '/api/public/hooks/ingest'
+    | '/api/public/hooks/trends-ingest'
   id:
     | '__root__'
     | '/'
@@ -200,8 +223,10 @@ export interface FileRouteTypes {
     | '/_authenticated/topics'
     | '/_authenticated/trending'
     | '/_authenticated/news/$id'
+    | '/_authenticated/topics/$slug'
     | '/_authenticated/news/cluster/$id'
     | '/api/public/hooks/ingest'
+    | '/api/public/hooks/trends-ingest'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -209,6 +234,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ApiPublicHooksIngestRoute: typeof ApiPublicHooksIngestRoute
+  ApiPublicHooksTrendsIngestRoute: typeof ApiPublicHooksTrendsIngestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -297,12 +323,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAiInsightsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/topics/$slug': {
+      id: '/_authenticated/topics/$slug'
+      path: '/$slug'
+      fullPath: '/topics/$slug'
+      preLoaderRoute: typeof AuthenticatedTopicsSlugRouteImport
+      parentRoute: typeof AuthenticatedTopicsRoute
+    }
     '/_authenticated/news/$id': {
       id: '/_authenticated/news/$id'
       path: '/$id'
       fullPath: '/news/$id'
       preLoaderRoute: typeof AuthenticatedNewsIdRouteImport
       parentRoute: typeof AuthenticatedNewsRoute
+    }
+    '/api/public/hooks/trends-ingest': {
+      id: '/api/public/hooks/trends-ingest'
+      path: '/api/public/hooks/trends-ingest'
+      fullPath: '/api/public/hooks/trends-ingest'
+      preLoaderRoute: typeof ApiPublicHooksTrendsIngestRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/hooks/ingest': {
       id: '/api/public/hooks/ingest'
@@ -334,6 +374,17 @@ const AuthenticatedNewsRouteChildren: AuthenticatedNewsRouteChildren = {
 const AuthenticatedNewsRouteWithChildren =
   AuthenticatedNewsRoute._addFileChildren(AuthenticatedNewsRouteChildren)
 
+interface AuthenticatedTopicsRouteChildren {
+  AuthenticatedTopicsSlugRoute: typeof AuthenticatedTopicsSlugRoute
+}
+
+const AuthenticatedTopicsRouteChildren: AuthenticatedTopicsRouteChildren = {
+  AuthenticatedTopicsSlugRoute: AuthenticatedTopicsSlugRoute,
+}
+
+const AuthenticatedTopicsRouteWithChildren =
+  AuthenticatedTopicsRoute._addFileChildren(AuthenticatedTopicsRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAiInsightsRoute: typeof AuthenticatedAiInsightsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -342,7 +393,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProviderHealthRoute: typeof AuthenticatedProviderHealthRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedStatesRoute: typeof AuthenticatedStatesRoute
-  AuthenticatedTopicsRoute: typeof AuthenticatedTopicsRoute
+  AuthenticatedTopicsRoute: typeof AuthenticatedTopicsRouteWithChildren
   AuthenticatedTrendingRoute: typeof AuthenticatedTrendingRoute
 }
 
@@ -354,7 +405,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProviderHealthRoute: AuthenticatedProviderHealthRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedStatesRoute: AuthenticatedStatesRoute,
-  AuthenticatedTopicsRoute: AuthenticatedTopicsRoute,
+  AuthenticatedTopicsRoute: AuthenticatedTopicsRouteWithChildren,
   AuthenticatedTrendingRoute: AuthenticatedTrendingRoute,
 }
 
@@ -366,6 +417,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ApiPublicHooksIngestRoute: ApiPublicHooksIngestRoute,
+  ApiPublicHooksTrendsIngestRoute: ApiPublicHooksTrendsIngestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
