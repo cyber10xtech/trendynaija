@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_jobs: {
+        Row: {
+          attempts: number
+          confidence: number | null
+          created_at: string
+          duration_ms: number | null
+          error: string | null
+          id: string
+          kind: string
+          model: string | null
+          payload: Json
+          result: Json
+          status: string
+          subject_id: string | null
+          subject_type: string | null
+          tokens_input: number | null
+          tokens_output: number | null
+        }
+        Insert: {
+          attempts?: number
+          confidence?: number | null
+          created_at?: string
+          duration_ms?: number | null
+          error?: string | null
+          id?: string
+          kind: string
+          model?: string | null
+          payload?: Json
+          result?: Json
+          status?: string
+          subject_id?: string | null
+          subject_type?: string | null
+          tokens_input?: number | null
+          tokens_output?: number | null
+        }
+        Update: {
+          attempts?: number
+          confidence?: number | null
+          created_at?: string
+          duration_ms?: number | null
+          error?: string | null
+          id?: string
+          kind?: string
+          model?: string | null
+          payload?: Json
+          result?: Json
+          status?: string
+          subject_id?: string | null
+          subject_type?: string | null
+          tokens_input?: number | null
+          tokens_output?: number | null
+        }
+        Relationships: []
+      }
       ai_summaries: {
         Row: {
           bullet_points: Json | null
@@ -21,16 +75,24 @@ export type Database = {
           confidence: number | null
           created_at: string
           detailed_summary: string | null
+          eli15: string | null
+          emotions: Json
           entities: Json | null
+          executive_summary: string | null
           id: string
+          key_drivers: Json
           model: string | null
+          one_sentence: string | null
           short_summary: string | null
           state_id: string | null
           subject_id: string
           subject_type: string
           summary: string
+          three_sentence: string | null
           topics: Json | null
           updated_at: string
+          why_trending: string | null
+          why_trending_detailed: string | null
         }
         Insert: {
           bullet_points?: Json | null
@@ -38,16 +100,24 @@ export type Database = {
           confidence?: number | null
           created_at?: string
           detailed_summary?: string | null
+          eli15?: string | null
+          emotions?: Json
           entities?: Json | null
+          executive_summary?: string | null
           id?: string
+          key_drivers?: Json
           model?: string | null
+          one_sentence?: string | null
           short_summary?: string | null
           state_id?: string | null
           subject_id: string
           subject_type: string
           summary: string
+          three_sentence?: string | null
           topics?: Json | null
           updated_at?: string
+          why_trending?: string | null
+          why_trending_detailed?: string | null
         }
         Update: {
           bullet_points?: Json | null
@@ -55,16 +125,24 @@ export type Database = {
           confidence?: number | null
           created_at?: string
           detailed_summary?: string | null
+          eli15?: string | null
+          emotions?: Json
           entities?: Json | null
+          executive_summary?: string | null
           id?: string
+          key_drivers?: Json
           model?: string | null
+          one_sentence?: string | null
           short_summary?: string | null
           state_id?: string | null
           subject_id?: string
           subject_type?: string
           summary?: string
+          three_sentence?: string | null
           topics?: Json | null
           updated_at?: string
+          why_trending?: string | null
+          why_trending_detailed?: string | null
         }
         Relationships: [
           {
@@ -142,6 +220,138 @@ export type Database = {
             columns: ["topic_id"]
             isOneToOne: false
             referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      daily_briefs: {
+        Row: {
+          brief_date: string
+          category: string | null
+          created_at: string
+          id: string
+          model: string | null
+          scope: string
+          sections: Json
+          summary: string
+          title: string
+          top_topics: Json
+          updated_at: string
+        }
+        Insert: {
+          brief_date: string
+          category?: string | null
+          created_at?: string
+          id?: string
+          model?: string | null
+          scope?: string
+          sections?: Json
+          summary: string
+          title: string
+          top_topics?: Json
+          updated_at?: string
+        }
+        Update: {
+          brief_date?: string
+          category?: string | null
+          created_at?: string
+          id?: string
+          model?: string | null
+          scope?: string
+          sections?: Json
+          summary?: string
+          title?: string
+          top_topics?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      entities: {
+        Row: {
+          aliases: Json
+          created_at: string
+          entity_type: string
+          id: string
+          last_seen_at: string | null
+          mention_count: number
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          aliases?: Json
+          created_at?: string
+          entity_type: string
+          id?: string
+          last_seen_at?: string | null
+          mention_count?: number
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          aliases?: Json
+          created_at?: string
+          entity_type?: string
+          id?: string
+          last_seen_at?: string | null
+          mention_count?: number
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      entity_relations: {
+        Row: {
+          confidence: number
+          created_at: string
+          entity_a_id: string
+          entity_b_id: string
+          evidence_count: number
+          id: string
+          last_seen_at: string
+          relation_type: string
+          strength: number
+          updated_at: string
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          entity_a_id: string
+          entity_b_id: string
+          evidence_count?: number
+          id?: string
+          last_seen_at?: string
+          relation_type?: string
+          strength?: number
+          updated_at?: string
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          entity_a_id?: string
+          entity_b_id?: string
+          evidence_count?: number
+          id?: string
+          last_seen_at?: string
+          relation_type?: string
+          strength?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "entity_relations_entity_a_id_fkey"
+            columns: ["entity_a_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "entity_relations_entity_b_id_fkey"
+            columns: ["entity_b_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
             referencedColumns: ["id"]
           },
         ]
@@ -370,6 +580,93 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      narrative_topics: {
+        Row: {
+          added_at: string
+          id: string
+          narrative_id: string
+          position: number
+          role: string | null
+          topic_id: string
+        }
+        Insert: {
+          added_at?: string
+          id?: string
+          narrative_id: string
+          position?: number
+          role?: string | null
+          topic_id: string
+        }
+        Update: {
+          added_at?: string
+          id?: string
+          narrative_id?: string
+          position?: number
+          role?: string | null
+          topic_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "narrative_topics_narrative_id_fkey"
+            columns: ["narrative_id"]
+            isOneToOne: false
+            referencedRelation: "narratives"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "narrative_topics_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      narratives: {
+        Row: {
+          confidence: number
+          created_at: string
+          description: string | null
+          id: string
+          last_evolved_at: string
+          lifecycle_state: string
+          model: string | null
+          slug: string
+          summary: string | null
+          title: string
+          topic_count: number
+          updated_at: string
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_evolved_at?: string
+          lifecycle_state?: string
+          model?: string | null
+          slug: string
+          summary?: string | null
+          title: string
+          topic_count?: number
+          updated_at?: string
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_evolved_at?: string
+          lifecycle_state?: string
+          model?: string | null
+          slug?: string
+          summary?: string | null
+          title?: string
+          topic_count?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
       news_articles: {
         Row: {
@@ -821,33 +1118,144 @@ export type Database = {
         }
         Relationships: []
       }
+      topic_entities: {
+        Row: {
+          created_at: string
+          entity_id: string
+          id: string
+          last_seen_at: string
+          mentions: number
+          topic_id: string
+        }
+        Insert: {
+          created_at?: string
+          entity_id: string
+          id?: string
+          last_seen_at?: string
+          mentions?: number
+          topic_id: string
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string
+          id?: string
+          last_seen_at?: string
+          mentions?: number
+          topic_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "topic_entities_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "topic_entities_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      topic_relations: {
+        Row: {
+          confidence: number
+          created_at: string
+          evidence_count: number
+          id: string
+          last_seen_at: string
+          relation_type: string
+          strength: number
+          topic_a_id: string
+          topic_b_id: string
+          updated_at: string
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          evidence_count?: number
+          id?: string
+          last_seen_at?: string
+          relation_type?: string
+          strength?: number
+          topic_a_id: string
+          topic_b_id: string
+          updated_at?: string
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          evidence_count?: number
+          id?: string
+          last_seen_at?: string
+          relation_type?: string
+          strength?: number
+          topic_a_id?: string
+          topic_b_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "topic_relations_topic_a_id_fkey"
+            columns: ["topic_a_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "topic_relations_topic_b_id_fkey"
+            columns: ["topic_b_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       topics: {
         Row: {
+          acceleration: number
           category: string | null
           created_at: string
           id: string
+          last_lifecycle_change_at: string | null
+          lifecycle_state: string
+          momentum: number
           name: string
           slug: string
           state_id: string | null
           updated_at: string
+          velocity: number
         }
         Insert: {
+          acceleration?: number
           category?: string | null
           created_at?: string
           id?: string
+          last_lifecycle_change_at?: string | null
+          lifecycle_state?: string
+          momentum?: number
           name: string
           slug: string
           state_id?: string | null
           updated_at?: string
+          velocity?: number
         }
         Update: {
+          acceleration?: number
           category?: string | null
           created_at?: string
           id?: string
+          last_lifecycle_change_at?: string | null
+          lifecycle_state?: string
+          momentum?: number
           name?: string
           slug?: string
           state_id?: string | null
           updated_at?: string
+          velocity?: number
         }
         Relationships: [
           {
@@ -855,6 +1263,66 @@ export type Database = {
             columns: ["state_id"]
             isOneToOne: false
             referencedRelation: "states"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trend_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string
+          fired_at: string
+          id: string
+          message: string | null
+          metadata: Json
+          narrative_id: string | null
+          resolved: boolean
+          resolved_at: string | null
+          severity: string
+          title: string
+          topic_id: string | null
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string
+          fired_at?: string
+          id?: string
+          message?: string | null
+          metadata?: Json
+          narrative_id?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          severity?: string
+          title: string
+          topic_id?: string | null
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string
+          fired_at?: string
+          id?: string
+          message?: string | null
+          metadata?: Json
+          narrative_id?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          severity?: string
+          title?: string
+          topic_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trend_alerts_narrative_id_fkey"
+            columns: ["narrative_id"]
+            isOneToOne: false
+            referencedRelation: "narratives"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trend_alerts_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
             referencedColumns: ["id"]
           },
         ]
@@ -910,6 +1378,59 @@ export type Database = {
           },
           {
             foreignKeyName: "trend_events_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trend_predictions: {
+        Row: {
+          confidence_high: number | null
+          confidence_low: number | null
+          created_at: string
+          expected_lifespan_hours: number | null
+          expires_at: string | null
+          id: string
+          model: string | null
+          national_spread_probability: number | null
+          prediction_type: string
+          probability: number
+          rationale: string | null
+          topic_id: string
+        }
+        Insert: {
+          confidence_high?: number | null
+          confidence_low?: number | null
+          created_at?: string
+          expected_lifespan_hours?: number | null
+          expires_at?: string | null
+          id?: string
+          model?: string | null
+          national_spread_probability?: number | null
+          prediction_type?: string
+          probability: number
+          rationale?: string | null
+          topic_id: string
+        }
+        Update: {
+          confidence_high?: number | null
+          confidence_low?: number | null
+          created_at?: string
+          expected_lifespan_hours?: number | null
+          expires_at?: string | null
+          id?: string
+          model?: string | null
+          national_spread_probability?: number | null
+          prediction_type?: string
+          probability?: number
+          rationale?: string | null
+          topic_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trend_predictions_topic_id_fkey"
             columns: ["topic_id"]
             isOneToOne: false
             referencedRelation: "topics"
