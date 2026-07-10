@@ -20,6 +20,7 @@ import { Route as AuthenticatedProviderHealthRouteImport } from './routes/_authe
 import { Route as AuthenticatedNewsRouteImport } from './routes/_authenticated/news'
 import { Route as AuthenticatedHashtagsRouteImport } from './routes/_authenticated/hashtags'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDailyBriefRouteImport } from './routes/_authenticated/daily-brief'
 import { Route as AuthenticatedAiInsightsRouteImport } from './routes/_authenticated/ai-insights'
 import { Route as AuthenticatedTopicsSlugRouteImport } from './routes/_authenticated/topics.$slug'
 import { Route as AuthenticatedNewsIdRouteImport } from './routes/_authenticated/news.$id'
@@ -83,6 +84,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedDailyBriefRoute = AuthenticatedDailyBriefRouteImport.update({
+  id: '/daily-brief',
+  path: '/daily-brief',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAiInsightsRoute = AuthenticatedAiInsightsRouteImport.update({
   id: '/ai-insights',
   path: '/ai-insights',
@@ -125,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/ai-insights': typeof AuthenticatedAiInsightsRoute
+  '/daily-brief': typeof AuthenticatedDailyBriefRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/hashtags': typeof AuthenticatedHashtagsRoute
   '/news': typeof AuthenticatedNewsRouteWithChildren
@@ -144,6 +151,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/ai-insights': typeof AuthenticatedAiInsightsRoute
+  '/daily-brief': typeof AuthenticatedDailyBriefRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/hashtags': typeof AuthenticatedHashtagsRoute
   '/news': typeof AuthenticatedNewsRouteWithChildren
@@ -165,6 +173,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/ai-insights': typeof AuthenticatedAiInsightsRoute
+  '/_authenticated/daily-brief': typeof AuthenticatedDailyBriefRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/hashtags': typeof AuthenticatedHashtagsRoute
   '/_authenticated/news': typeof AuthenticatedNewsRouteWithChildren
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/ai-insights'
+    | '/daily-brief'
     | '/dashboard'
     | '/hashtags'
     | '/news'
@@ -205,6 +215,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/ai-insights'
+    | '/daily-brief'
     | '/dashboard'
     | '/hashtags'
     | '/news'
@@ -225,6 +236,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/ai-insights'
+    | '/_authenticated/daily-brief'
     | '/_authenticated/dashboard'
     | '/_authenticated/hashtags'
     | '/_authenticated/news'
@@ -329,6 +341,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/daily-brief': {
+      id: '/_authenticated/daily-brief'
+      path: '/daily-brief'
+      fullPath: '/daily-brief'
+      preLoaderRoute: typeof AuthenticatedDailyBriefRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/ai-insights': {
       id: '/_authenticated/ai-insights'
       path: '/ai-insights'
@@ -407,6 +426,7 @@ const AuthenticatedTopicsRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAiInsightsRoute: typeof AuthenticatedAiInsightsRoute
+  AuthenticatedDailyBriefRoute: typeof AuthenticatedDailyBriefRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedHashtagsRoute: typeof AuthenticatedHashtagsRoute
   AuthenticatedNewsRoute: typeof AuthenticatedNewsRouteWithChildren
@@ -419,6 +439,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAiInsightsRoute: AuthenticatedAiInsightsRoute,
+  AuthenticatedDailyBriefRoute: AuthenticatedDailyBriefRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedHashtagsRoute: AuthenticatedHashtagsRoute,
   AuthenticatedNewsRoute: AuthenticatedNewsRouteWithChildren,

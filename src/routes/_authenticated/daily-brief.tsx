@@ -26,7 +26,7 @@ function DailyBriefPage() {
   const regenFn = useServerFn(regenerateBriefs);
   const briefs = useQuery({ queryKey: ["daily-briefs-today"], queryFn: () => listFn() });
   const regen = useMutation({
-    mutationFn: () => regenFn({ data: {} }),
+    mutationFn: () => regenFn(),
     onSuccess: (r) => {
       toast.success("Briefs regenerated", { description: `${r.generated} generated · ${r.skipped} skipped` });
       qc.invalidateQueries({ queryKey: ["daily-briefs-today"] });
