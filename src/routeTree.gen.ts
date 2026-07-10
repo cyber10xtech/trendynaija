@@ -25,6 +25,7 @@ import { Route as AuthenticatedTopicsSlugRouteImport } from './routes/_authentic
 import { Route as AuthenticatedNewsIdRouteImport } from './routes/_authenticated/news.$id'
 import { Route as ApiPublicHooksTrendsIngestRouteImport } from './routes/api/public/hooks/trends-ingest'
 import { Route as ApiPublicHooksIngestRouteImport } from './routes/api/public/hooks/ingest'
+import { Route as ApiPublicHooksAiBrainRouteImport } from './routes/api/public/hooks/ai-brain'
 import { Route as AuthenticatedNewsClusterIdRouteImport } from './routes/_authenticated/news.cluster.$id'
 
 const AuthRoute = AuthRouteImport.update({
@@ -108,6 +109,11 @@ const ApiPublicHooksIngestRoute = ApiPublicHooksIngestRouteImport.update({
   path: '/api/public/hooks/ingest',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicHooksAiBrainRoute = ApiPublicHooksAiBrainRouteImport.update({
+  id: '/api/public/hooks/ai-brain',
+  path: '/api/public/hooks/ai-brain',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedNewsClusterIdRoute =
   AuthenticatedNewsClusterIdRouteImport.update({
     id: '/cluster/$id',
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/news/$id': typeof AuthenticatedNewsIdRoute
   '/topics/$slug': typeof AuthenticatedTopicsSlugRoute
   '/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
+  '/api/public/hooks/ai-brain': typeof ApiPublicHooksAiBrainRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
   '/api/public/hooks/trends-ingest': typeof ApiPublicHooksTrendsIngestRoute
 }
@@ -148,6 +155,7 @@ export interface FileRoutesByTo {
   '/news/$id': typeof AuthenticatedNewsIdRoute
   '/topics/$slug': typeof AuthenticatedTopicsSlugRoute
   '/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
+  '/api/public/hooks/ai-brain': typeof ApiPublicHooksAiBrainRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
   '/api/public/hooks/trends-ingest': typeof ApiPublicHooksTrendsIngestRoute
 }
@@ -168,6 +176,7 @@ export interface FileRoutesById {
   '/_authenticated/news/$id': typeof AuthenticatedNewsIdRoute
   '/_authenticated/topics/$slug': typeof AuthenticatedTopicsSlugRoute
   '/_authenticated/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
+  '/api/public/hooks/ai-brain': typeof ApiPublicHooksAiBrainRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
   '/api/public/hooks/trends-ingest': typeof ApiPublicHooksTrendsIngestRoute
 }
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/news/$id'
     | '/topics/$slug'
     | '/news/cluster/$id'
+    | '/api/public/hooks/ai-brain'
     | '/api/public/hooks/ingest'
     | '/api/public/hooks/trends-ingest'
   fileRoutesByTo: FileRoutesByTo
@@ -206,6 +216,7 @@ export interface FileRouteTypes {
     | '/news/$id'
     | '/topics/$slug'
     | '/news/cluster/$id'
+    | '/api/public/hooks/ai-brain'
     | '/api/public/hooks/ingest'
     | '/api/public/hooks/trends-ingest'
   id:
@@ -225,6 +236,7 @@ export interface FileRouteTypes {
     | '/_authenticated/news/$id'
     | '/_authenticated/topics/$slug'
     | '/_authenticated/news/cluster/$id'
+    | '/api/public/hooks/ai-brain'
     | '/api/public/hooks/ingest'
     | '/api/public/hooks/trends-ingest'
   fileRoutesById: FileRoutesById
@@ -233,6 +245,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ApiPublicHooksAiBrainRoute: typeof ApiPublicHooksAiBrainRoute
   ApiPublicHooksIngestRoute: typeof ApiPublicHooksIngestRoute
   ApiPublicHooksTrendsIngestRoute: typeof ApiPublicHooksTrendsIngestRoute
 }
@@ -351,6 +364,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHooksIngestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/ai-brain': {
+      id: '/api/public/hooks/ai-brain'
+      path: '/api/public/hooks/ai-brain'
+      fullPath: '/api/public/hooks/ai-brain'
+      preLoaderRoute: typeof ApiPublicHooksAiBrainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/news/cluster/$id': {
       id: '/_authenticated/news/cluster/$id'
       path: '/cluster/$id'
@@ -416,6 +436,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ApiPublicHooksAiBrainRoute: ApiPublicHooksAiBrainRoute,
   ApiPublicHooksIngestRoute: ApiPublicHooksIngestRoute,
   ApiPublicHooksTrendsIngestRoute: ApiPublicHooksTrendsIngestRoute,
 }
