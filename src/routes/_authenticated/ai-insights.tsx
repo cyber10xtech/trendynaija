@@ -63,7 +63,7 @@ function AIIntelligencePage() {
   const relations = useQuery({ queryKey: ["brain-relations"], queryFn: () => relationsFn({ data: { limit: 12 } }) });
 
   const run = useMutation({
-    mutationFn: () => runFn({ data: {} as { skipBriefs?: boolean; skipPredictions?: boolean; skipNarratives?: boolean } }),
+    mutationFn: () => runFn({ data: { skipBriefs: false, skipPredictions: false, skipNarratives: false } }),
     onSuccess: (r) => {
       toast.success("Brain run complete", {
         description: `${r.velocitiesUpdated} topics · ${r.alerts.fired} alerts · ${r.narratives.narrativesCreated + r.narratives.narrativesUpdated} narratives · ${r.briefs.generated} briefs`,
