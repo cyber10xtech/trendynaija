@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, TrendingUp, Newspaper, Hash, Sparkles, MapPin,
-  Settings, Activity, Tags, LogOut, Flame,
+  Settings, Activity, Tags, LogOut, Flame, FileText,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -12,7 +12,8 @@ const nav = [
   { to: "/news", label: "News", icon: Newspaper },
   { to: "/topics", label: "Topics", icon: Tags },
   { to: "/hashtags", label: "Hashtags", icon: Hash },
-  { to: "/ai-insights", label: "AI Insights", icon: Sparkles },
+  { to: "/ai-insights", label: "AI Intelligence", icon: Sparkles },
+  { to: "/daily-brief", label: "Daily Brief", icon: FileText },
   { to: "/states", label: "States", icon: MapPin },
   { to: "/settings", label: "Settings", icon: Settings },
   { to: "/provider-health", label: "Provider Health", icon: Activity },
