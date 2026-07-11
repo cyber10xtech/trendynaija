@@ -416,27 +416,101 @@ export type Database = {
           },
         ]
       }
+      hashtag_snapshots: {
+        Row: {
+          captured_at: string
+          growth_rate: number
+          hashtag_id: string
+          id: string
+          rank: number | null
+          usage_count: number
+          velocity: number
+        }
+        Insert: {
+          captured_at?: string
+          growth_rate?: number
+          hashtag_id: string
+          id?: string
+          rank?: number | null
+          usage_count?: number
+          velocity?: number
+        }
+        Update: {
+          captured_at?: string
+          growth_rate?: number
+          hashtag_id?: string
+          id?: string
+          rank?: number | null
+          usage_count?: number
+          velocity?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hashtag_snapshots_hashtag_id_fkey"
+            columns: ["hashtag_id"]
+            isOneToOne: false
+            referencedRelation: "hashtags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       hashtags: {
         Row: {
+          associated_entities: string[]
+          associated_topics: string[]
+          category: string | null
           created_at: string
+          current_rank: number | null
+          first_seen_at: string
+          growth_rate: number
           id: string
+          last_seen_at: string
+          momentum: number
+          previous_rank: number | null
+          rank_change: number
           state_id: string | null
           tag: string
           updated_at: string
+          usage_count: number
+          velocity: number
         }
         Insert: {
+          associated_entities?: string[]
+          associated_topics?: string[]
+          category?: string | null
           created_at?: string
+          current_rank?: number | null
+          first_seen_at?: string
+          growth_rate?: number
           id?: string
+          last_seen_at?: string
+          momentum?: number
+          previous_rank?: number | null
+          rank_change?: number
           state_id?: string | null
           tag: string
           updated_at?: string
+          usage_count?: number
+          velocity?: number
         }
         Update: {
+          associated_entities?: string[]
+          associated_topics?: string[]
+          category?: string | null
           created_at?: string
+          current_rank?: number | null
+          first_seen_at?: string
+          growth_rate?: number
           id?: string
+          last_seen_at?: string
+          momentum?: number
+          previous_rank?: number | null
+          rank_change?: number
           state_id?: string | null
           tag?: string
           updated_at?: string
+          usage_count?: number
+          velocity?: number
         }
         Relationships: [
           {
@@ -1013,6 +1087,100 @@ export type Database = {
         }
         Relationships: []
       }
+      social_signals: {
+        Row: {
+          author: string | null
+          category: string | null
+          confidence: number
+          content_hash: string
+          created_at: string
+          engagement: Json
+          entities: Json
+          external_id: string
+          hashtags: string[]
+          id: string
+          ingested_at: string
+          language: string | null
+          location: string | null
+          mentions: string[]
+          published_at: string | null
+          raw: Json
+          source_id: string
+          state_id: string | null
+          text: string
+          topic_id: string | null
+          url: string | null
+        }
+        Insert: {
+          author?: string | null
+          category?: string | null
+          confidence?: number
+          content_hash: string
+          created_at?: string
+          engagement?: Json
+          entities?: Json
+          external_id: string
+          hashtags?: string[]
+          id?: string
+          ingested_at?: string
+          language?: string | null
+          location?: string | null
+          mentions?: string[]
+          published_at?: string | null
+          raw?: Json
+          source_id: string
+          state_id?: string | null
+          text: string
+          topic_id?: string | null
+          url?: string | null
+        }
+        Update: {
+          author?: string | null
+          category?: string | null
+          confidence?: number
+          content_hash?: string
+          created_at?: string
+          engagement?: Json
+          entities?: Json
+          external_id?: string
+          hashtags?: string[]
+          id?: string
+          ingested_at?: string
+          language?: string | null
+          location?: string | null
+          mentions?: string[]
+          published_at?: string | null
+          raw?: Json
+          source_id?: string
+          state_id?: string | null
+          text?: string
+          topic_id?: string | null
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_signals_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "social_signals_state_id_fkey"
+            columns: ["state_id"]
+            isOneToOne: false
+            referencedRelation: "states"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "social_signals_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sources: {
         Row: {
           base_url: string | null
@@ -1501,6 +1669,7 @@ export type Database = {
           news_coverage: number
           score: number
           search_interest: number
+          social_activity: number
           source_diversity: number
           state_id: string | null
           topic_id: string | null
@@ -1519,6 +1688,7 @@ export type Database = {
           news_coverage?: number
           score?: number
           search_interest?: number
+          social_activity?: number
           source_diversity?: number
           state_id?: string | null
           topic_id?: string | null
@@ -1537,6 +1707,7 @@ export type Database = {
           news_coverage?: number
           score?: number
           search_interest?: number
+          social_activity?: number
           source_diversity?: number
           state_id?: string | null
           topic_id?: string | null
