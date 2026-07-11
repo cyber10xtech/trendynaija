@@ -55,6 +55,7 @@ export const listRecentSocialSignals = createServerFn({ method: "GET" })
 export const socialSourceBreakdown = createServerFn({ method: "GET" })
   .handler(async () => {
     const sb = publicClient();
+    const { data: rows } = await sb
       .from("social_signals")
       .select("source_id, sources!inner(key,name)")
       .gte("published_at", new Date(Date.now() - 7 * 24 * 3_600_000).toISOString())
