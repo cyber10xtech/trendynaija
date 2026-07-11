@@ -25,6 +25,7 @@ import { Route as AuthenticatedAiInsightsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedTopicsSlugRouteImport } from './routes/_authenticated/topics.$slug'
 import { Route as AuthenticatedNewsIdRouteImport } from './routes/_authenticated/news.$id'
 import { Route as ApiPublicHooksTrendsIngestRouteImport } from './routes/api/public/hooks/trends-ingest'
+import { Route as ApiPublicHooksSocialIngestRouteImport } from './routes/api/public/hooks/social-ingest'
 import { Route as ApiPublicHooksIngestRouteImport } from './routes/api/public/hooks/ingest'
 import { Route as ApiPublicHooksAiBrainRouteImport } from './routes/api/public/hooks/ai-brain'
 import { Route as AuthenticatedNewsClusterIdRouteImport } from './routes/_authenticated/news.cluster.$id'
@@ -110,6 +111,12 @@ const ApiPublicHooksTrendsIngestRoute =
     path: '/api/public/hooks/trends-ingest',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicHooksSocialIngestRoute =
+  ApiPublicHooksSocialIngestRouteImport.update({
+    id: '/api/public/hooks/social-ingest',
+    path: '/api/public/hooks/social-ingest',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicHooksIngestRoute = ApiPublicHooksIngestRouteImport.update({
   id: '/api/public/hooks/ingest',
   path: '/api/public/hooks/ingest',
@@ -145,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
   '/api/public/hooks/ai-brain': typeof ApiPublicHooksAiBrainRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
+  '/api/public/hooks/social-ingest': typeof ApiPublicHooksSocialIngestRoute
   '/api/public/hooks/trends-ingest': typeof ApiPublicHooksTrendsIngestRoute
 }
 export interface FileRoutesByTo {
@@ -165,6 +173,7 @@ export interface FileRoutesByTo {
   '/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
   '/api/public/hooks/ai-brain': typeof ApiPublicHooksAiBrainRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
+  '/api/public/hooks/social-ingest': typeof ApiPublicHooksSocialIngestRoute
   '/api/public/hooks/trends-ingest': typeof ApiPublicHooksTrendsIngestRoute
 }
 export interface FileRoutesById {
@@ -187,6 +196,7 @@ export interface FileRoutesById {
   '/_authenticated/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
   '/api/public/hooks/ai-brain': typeof ApiPublicHooksAiBrainRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
+  '/api/public/hooks/social-ingest': typeof ApiPublicHooksSocialIngestRoute
   '/api/public/hooks/trends-ingest': typeof ApiPublicHooksTrendsIngestRoute
 }
 export interface FileRouteTypes {
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/news/cluster/$id'
     | '/api/public/hooks/ai-brain'
     | '/api/public/hooks/ingest'
+    | '/api/public/hooks/social-ingest'
     | '/api/public/hooks/trends-ingest'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/news/cluster/$id'
     | '/api/public/hooks/ai-brain'
     | '/api/public/hooks/ingest'
+    | '/api/public/hooks/social-ingest'
     | '/api/public/hooks/trends-ingest'
   id:
     | '__root__'
@@ -250,6 +262,7 @@ export interface FileRouteTypes {
     | '/_authenticated/news/cluster/$id'
     | '/api/public/hooks/ai-brain'
     | '/api/public/hooks/ingest'
+    | '/api/public/hooks/social-ingest'
     | '/api/public/hooks/trends-ingest'
   fileRoutesById: FileRoutesById
 }
@@ -259,6 +272,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ApiPublicHooksAiBrainRoute: typeof ApiPublicHooksAiBrainRoute
   ApiPublicHooksIngestRoute: typeof ApiPublicHooksIngestRoute
+  ApiPublicHooksSocialIngestRoute: typeof ApiPublicHooksSocialIngestRoute
   ApiPublicHooksTrendsIngestRoute: typeof ApiPublicHooksTrendsIngestRoute
 }
 
@@ -376,6 +390,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHooksTrendsIngestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/social-ingest': {
+      id: '/api/public/hooks/social-ingest'
+      path: '/api/public/hooks/social-ingest'
+      fullPath: '/api/public/hooks/social-ingest'
+      preLoaderRoute: typeof ApiPublicHooksSocialIngestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hooks/ingest': {
       id: '/api/public/hooks/ingest'
       path: '/api/public/hooks/ingest'
@@ -459,6 +480,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ApiPublicHooksAiBrainRoute: ApiPublicHooksAiBrainRoute,
   ApiPublicHooksIngestRoute: ApiPublicHooksIngestRoute,
+  ApiPublicHooksSocialIngestRoute: ApiPublicHooksSocialIngestRoute,
   ApiPublicHooksTrendsIngestRoute: ApiPublicHooksTrendsIngestRoute,
 }
 export const routeTree = rootRouteImport
