@@ -11,6 +11,8 @@ import {
   listProvidersHealth,
 } from "@/lib/news/news.functions";
 import { listTrendingSearches, trendsDashboardStats } from "@/lib/trends/trends.functions";
+import { listTrendingHashtags, socialStats } from "@/lib/social/social.functions";
+import { Hash } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
