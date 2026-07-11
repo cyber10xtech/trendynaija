@@ -131,6 +131,24 @@ function Dashboard() {
           </div>
         </Widget>
 
+        <Widget title="Trending Hashtags" subtitle={`${social.data?.signalsLast24h ?? 0} signals last 24h · ${social.data?.enabledProviders ?? 0} providers`} action={<Link to="/hashtags" className="text-xs text-primary hover:underline">See all →</Link>}>
+          {hashtags.data && hashtags.data.length > 0 ? (
+            <ol className="space-y-1.5">
+              {hashtags.data.slice(0, 8).map((h) => (
+                <li key={h.id} className="flex items-center gap-2 text-sm">
+                  <span className="w-4 text-xs text-muted-foreground tabular-nums">{h.current_rank}</span>
+                  <Link to="/hashtags" className="truncate hover:text-primary">#{h.tag}</Link>
+                  <span className="ml-auto text-[10px] text-muted-foreground">{h.usage_count}</span>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <EmptyState icon={<Hash className="w-5 h-5 text-muted-foreground" />} title="No hashtags yet" description="Ingest social sources to populate hashtags." />
+          )}
+        </Widget>
+
+
+
         <Widget title="Latest Stories" subtitle="Deduplicated & clustered" className="lg:col-span-2" action={<Link to="/news" className="text-xs text-primary hover:underline">See all →</Link>}>
           {clusters.data && clusters.data.length > 0 ? (
             <ul className="divide-y divide-border">
