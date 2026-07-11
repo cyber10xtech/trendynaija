@@ -32,8 +32,13 @@ function Dashboard() {
   const trendingFn = useServerFn(listTrendingSearches);
   const trendsStatsFn = useServerFn(trendsDashboardStats);
 
+  const hashtagsFn = useServerFn(listTrendingHashtags);
+  const socialStatsFn = useServerFn(socialStats);
+
   const stats = useQuery({ queryKey: ["dashboard-stats"], queryFn: () => statsFn() });
   const trends = useQuery({ queryKey: ["trends-stats"], queryFn: () => trendsStatsFn() });
+  const hashtags = useQuery({ queryKey: ["dash-hashtags"], queryFn: () => hashtagsFn({ data: { limit: 10 } }) });
+  const social = useQuery({ queryKey: ["dash-social-stats"], queryFn: () => socialStatsFn() });
   const trendingNG = useQuery({ queryKey: ["dash-trending", "NG"], queryFn: () => trendingFn({ data: { regionCode: "NG", limit: 8 } }) });
   const trendingIM = useQuery({ queryKey: ["dash-trending", "NG-IM"], queryFn: () => trendingFn({ data: { regionCode: "NG-IM", limit: 8 } }) });
   const clusters = useQuery({
