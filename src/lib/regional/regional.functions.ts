@@ -7,7 +7,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 type Window = "24h" | "7d" | "30d" | "90d";
-type Row = Record<string, unknown>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Row = Record<string, any>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const untyped = (client: unknown) => client as any;
