@@ -194,7 +194,7 @@ export async function rebuildRegionalStats(opts: { windows?: WindowKey[] } = {})
         const tTotal = tNews + Number(tSocial ?? 0);
         if (tTotal === 0) continue;
         const tCounts: Counts = {
-          news: Number(tNews ?? 0), social: Number(tSocial ?? 0),
+          news: tNews, social: Number(tSocial ?? 0),
           hashtags: 0, search: 0, signalCount: tTotal, distinctSources: 1,
         };
         topicRows.push({
