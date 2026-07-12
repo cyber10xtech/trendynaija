@@ -224,6 +224,58 @@ export type Database = {
           },
         ]
       }
+      article_locations: {
+        Row: {
+          article_id: string
+          confidence: number
+          created_at: string
+          id: string
+          lga_id: string | null
+          source: string
+          state_id: string | null
+        }
+        Insert: {
+          article_id: string
+          confidence?: number
+          created_at?: string
+          id?: string
+          lga_id?: string | null
+          source?: string
+          state_id?: string | null
+        }
+        Update: {
+          article_id?: string
+          confidence?: number
+          created_at?: string
+          id?: string
+          lga_id?: string | null
+          source?: string
+          state_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_locations_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "news_articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "article_locations_lga_id_fkey"
+            columns: ["lga_id"]
+            isOneToOne: false
+            referencedRelation: "lgas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "article_locations_state_id_fkey"
+            columns: ["state_id"]
+            isOneToOne: false
+            referencedRelation: "states"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       daily_briefs: {
         Row: {
           brief_date: string
@@ -934,6 +986,174 @@ export type Database = {
           },
         ]
       }
+      region_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string
+          fired_at: string
+          from_state_id: string | null
+          id: string
+          lga_id: string | null
+          message: string | null
+          metadata: Json
+          resolved: boolean
+          resolved_at: string | null
+          severity: string
+          state_id: string | null
+          title: string
+          topic_id: string | null
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string
+          fired_at?: string
+          from_state_id?: string | null
+          id?: string
+          lga_id?: string | null
+          message?: string | null
+          metadata?: Json
+          resolved?: boolean
+          resolved_at?: string | null
+          severity?: string
+          state_id?: string | null
+          title: string
+          topic_id?: string | null
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string
+          fired_at?: string
+          from_state_id?: string | null
+          id?: string
+          lga_id?: string | null
+          message?: string | null
+          metadata?: Json
+          resolved?: boolean
+          resolved_at?: string | null
+          severity?: string
+          state_id?: string | null
+          title?: string
+          topic_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "region_alerts_from_state_id_fkey"
+            columns: ["from_state_id"]
+            isOneToOne: false
+            referencedRelation: "states"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "region_alerts_lga_id_fkey"
+            columns: ["lga_id"]
+            isOneToOne: false
+            referencedRelation: "lgas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "region_alerts_state_id_fkey"
+            columns: ["state_id"]
+            isOneToOne: false
+            referencedRelation: "states"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "region_alerts_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      regional_trend_stats: {
+        Row: {
+          confidence: number
+          created_at: string
+          freshness: number
+          growth: number
+          id: string
+          lga_id: string | null
+          news_count: number
+          scope: string
+          search_interest: number
+          sentiment: number
+          signal_count: number
+          social_count: number
+          state_id: string | null
+          time_window: string
+          topic_id: string | null
+          trend_score: number
+          updated_at: string
+          window_end: string
+          window_start: string
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          freshness?: number
+          growth?: number
+          id?: string
+          lga_id?: string | null
+          news_count?: number
+          scope?: string
+          search_interest?: number
+          sentiment?: number
+          signal_count?: number
+          social_count?: number
+          state_id?: string | null
+          time_window?: string
+          topic_id?: string | null
+          trend_score?: number
+          updated_at?: string
+          window_end: string
+          window_start: string
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          freshness?: number
+          growth?: number
+          id?: string
+          lga_id?: string | null
+          news_count?: number
+          scope?: string
+          search_interest?: number
+          sentiment?: number
+          signal_count?: number
+          social_count?: number
+          state_id?: string | null
+          time_window?: string
+          topic_id?: string | null
+          trend_score?: number
+          updated_at?: string
+          window_end?: string
+          window_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regional_trend_stats_lga_id_fkey"
+            columns: ["lga_id"]
+            isOneToOne: false
+            referencedRelation: "lgas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "regional_trend_stats_state_id_fkey"
+            columns: ["state_id"]
+            isOneToOne: false
+            referencedRelation: "states"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "regional_trend_stats_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       related_queries: {
         Row: {
           created_at: string
@@ -1086,6 +1306,58 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      signal_locations: {
+        Row: {
+          confidence: number
+          created_at: string
+          id: string
+          lga_id: string | null
+          signal_id: string
+          source: string
+          state_id: string | null
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          id?: string
+          lga_id?: string | null
+          signal_id: string
+          source?: string
+          state_id?: string | null
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          id?: string
+          lga_id?: string | null
+          signal_id?: string
+          source?: string
+          state_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "signal_locations_lga_id_fkey"
+            columns: ["lga_id"]
+            isOneToOne: false
+            referencedRelation: "lgas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "signal_locations_signal_id_fkey"
+            columns: ["signal_id"]
+            isOneToOne: false
+            referencedRelation: "social_signals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "signal_locations_state_id_fkey"
+            columns: ["state_id"]
+            isOneToOne: false
+            referencedRelation: "states"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       social_signals: {
         Row: {
@@ -1328,6 +1600,73 @@ export type Database = {
           },
         ]
       }
+      topic_locations: {
+        Row: {
+          confidence: number
+          created_at: string
+          evidence: Json
+          first_seen_at: string
+          id: string
+          last_seen_at: string
+          lga_id: string | null
+          signal_count: number
+          source: string
+          state_id: string | null
+          topic_id: string
+          updated_at: string
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          evidence?: Json
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          lga_id?: string | null
+          signal_count?: number
+          source?: string
+          state_id?: string | null
+          topic_id: string
+          updated_at?: string
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          evidence?: Json
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          lga_id?: string | null
+          signal_count?: number
+          source?: string
+          state_id?: string | null
+          topic_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "topic_locations_lga_id_fkey"
+            columns: ["lga_id"]
+            isOneToOne: false
+            referencedRelation: "lgas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "topic_locations_state_id_fkey"
+            columns: ["state_id"]
+            isOneToOne: false
+            referencedRelation: "states"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "topic_locations_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       topic_relations: {
         Row: {
           confidence: number
@@ -1440,13 +1779,16 @@ export type Database = {
           alert_type: string
           created_at: string
           fired_at: string
+          from_state_id: string | null
           id: string
+          lga_id: string | null
           message: string | null
           metadata: Json
           narrative_id: string | null
           resolved: boolean
           resolved_at: string | null
           severity: string
+          state_id: string | null
           title: string
           topic_id: string | null
         }
@@ -1454,13 +1796,16 @@ export type Database = {
           alert_type: string
           created_at?: string
           fired_at?: string
+          from_state_id?: string | null
           id?: string
+          lga_id?: string | null
           message?: string | null
           metadata?: Json
           narrative_id?: string | null
           resolved?: boolean
           resolved_at?: string | null
           severity?: string
+          state_id?: string | null
           title: string
           topic_id?: string | null
         }
@@ -1468,22 +1813,46 @@ export type Database = {
           alert_type?: string
           created_at?: string
           fired_at?: string
+          from_state_id?: string | null
           id?: string
+          lga_id?: string | null
           message?: string | null
           metadata?: Json
           narrative_id?: string | null
           resolved?: boolean
           resolved_at?: string | null
           severity?: string
+          state_id?: string | null
           title?: string
           topic_id?: string | null
         }
         Relationships: [
           {
+            foreignKeyName: "trend_alerts_from_state_id_fkey"
+            columns: ["from_state_id"]
+            isOneToOne: false
+            referencedRelation: "states"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trend_alerts_lga_id_fkey"
+            columns: ["lga_id"]
+            isOneToOne: false
+            referencedRelation: "lgas"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "trend_alerts_narrative_id_fkey"
             columns: ["narrative_id"]
             isOneToOne: false
             referencedRelation: "narratives"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trend_alerts_state_id_fkey"
+            columns: ["state_id"]
+            isOneToOne: false
+            referencedRelation: "states"
             referencedColumns: ["id"]
           },
           {
