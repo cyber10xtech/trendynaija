@@ -16,16 +16,21 @@ import { Route as AuthenticatedTrendingRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedTopicsRouteImport } from './routes/_authenticated/topics'
 import { Route as AuthenticatedStatesRouteImport } from './routes/_authenticated/states'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedRegionsRouteImport } from './routes/_authenticated/regions'
 import { Route as AuthenticatedProviderHealthRouteImport } from './routes/_authenticated/provider-health'
 import { Route as AuthenticatedNewsRouteImport } from './routes/_authenticated/news'
 import { Route as AuthenticatedHashtagsRouteImport } from './routes/_authenticated/hashtags'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDailyBriefRouteImport } from './routes/_authenticated/daily-brief'
+import { Route as AuthenticatedCompareRouteImport } from './routes/_authenticated/compare'
 import { Route as AuthenticatedAiInsightsRouteImport } from './routes/_authenticated/ai-insights'
 import { Route as AuthenticatedTopicsSlugRouteImport } from './routes/_authenticated/topics.$slug'
+import { Route as AuthenticatedStateIdRouteImport } from './routes/_authenticated/state.$id'
 import { Route as AuthenticatedNewsIdRouteImport } from './routes/_authenticated/news.$id'
+import { Route as AuthenticatedLgaIdRouteImport } from './routes/_authenticated/lga.$id'
 import { Route as ApiPublicHooksTrendsIngestRouteImport } from './routes/api/public/hooks/trends-ingest'
 import { Route as ApiPublicHooksSocialIngestRouteImport } from './routes/api/public/hooks/social-ingest'
+import { Route as ApiPublicHooksRegionalIntelRouteImport } from './routes/api/public/hooks/regional-intel'
 import { Route as ApiPublicHooksIngestRouteImport } from './routes/api/public/hooks/ingest'
 import { Route as ApiPublicHooksAiBrainRouteImport } from './routes/api/public/hooks/ai-brain'
 import { Route as AuthenticatedNewsClusterIdRouteImport } from './routes/_authenticated/news.cluster.$id'
@@ -64,6 +69,11 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedRegionsRoute = AuthenticatedRegionsRouteImport.update({
+  id: '/regions',
+  path: '/regions',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedProviderHealthRoute =
   AuthenticatedProviderHealthRouteImport.update({
     id: '/provider-health',
@@ -90,6 +100,11 @@ const AuthenticatedDailyBriefRoute = AuthenticatedDailyBriefRouteImport.update({
   path: '/daily-brief',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCompareRoute = AuthenticatedCompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAiInsightsRoute = AuthenticatedAiInsightsRouteImport.update({
   id: '/ai-insights',
   path: '/ai-insights',
@@ -100,10 +115,20 @@ const AuthenticatedTopicsSlugRoute = AuthenticatedTopicsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => AuthenticatedTopicsRoute,
 } as any)
+const AuthenticatedStateIdRoute = AuthenticatedStateIdRouteImport.update({
+  id: '/state/$id',
+  path: '/state/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedNewsIdRoute = AuthenticatedNewsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => AuthenticatedNewsRoute,
+} as any)
+const AuthenticatedLgaIdRoute = AuthenticatedLgaIdRouteImport.update({
+  id: '/lga/$id',
+  path: '/lga/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ApiPublicHooksTrendsIngestRoute =
   ApiPublicHooksTrendsIngestRouteImport.update({
@@ -115,6 +140,12 @@ const ApiPublicHooksSocialIngestRoute =
   ApiPublicHooksSocialIngestRouteImport.update({
     id: '/api/public/hooks/social-ingest',
     path: '/api/public/hooks/social-ingest',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicHooksRegionalIntelRoute =
+  ApiPublicHooksRegionalIntelRouteImport.update({
+    id: '/api/public/hooks/regional-intel',
+    path: '/api/public/hooks/regional-intel',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ApiPublicHooksIngestRoute = ApiPublicHooksIngestRouteImport.update({
@@ -138,20 +169,25 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/ai-insights': typeof AuthenticatedAiInsightsRoute
+  '/compare': typeof AuthenticatedCompareRoute
   '/daily-brief': typeof AuthenticatedDailyBriefRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/hashtags': typeof AuthenticatedHashtagsRoute
   '/news': typeof AuthenticatedNewsRouteWithChildren
   '/provider-health': typeof AuthenticatedProviderHealthRoute
+  '/regions': typeof AuthenticatedRegionsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/states': typeof AuthenticatedStatesRoute
   '/topics': typeof AuthenticatedTopicsRouteWithChildren
   '/trending': typeof AuthenticatedTrendingRoute
+  '/lga/$id': typeof AuthenticatedLgaIdRoute
   '/news/$id': typeof AuthenticatedNewsIdRoute
+  '/state/$id': typeof AuthenticatedStateIdRoute
   '/topics/$slug': typeof AuthenticatedTopicsSlugRoute
   '/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
   '/api/public/hooks/ai-brain': typeof ApiPublicHooksAiBrainRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
+  '/api/public/hooks/regional-intel': typeof ApiPublicHooksRegionalIntelRoute
   '/api/public/hooks/social-ingest': typeof ApiPublicHooksSocialIngestRoute
   '/api/public/hooks/trends-ingest': typeof ApiPublicHooksTrendsIngestRoute
 }
@@ -159,20 +195,25 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/ai-insights': typeof AuthenticatedAiInsightsRoute
+  '/compare': typeof AuthenticatedCompareRoute
   '/daily-brief': typeof AuthenticatedDailyBriefRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/hashtags': typeof AuthenticatedHashtagsRoute
   '/news': typeof AuthenticatedNewsRouteWithChildren
   '/provider-health': typeof AuthenticatedProviderHealthRoute
+  '/regions': typeof AuthenticatedRegionsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/states': typeof AuthenticatedStatesRoute
   '/topics': typeof AuthenticatedTopicsRouteWithChildren
   '/trending': typeof AuthenticatedTrendingRoute
+  '/lga/$id': typeof AuthenticatedLgaIdRoute
   '/news/$id': typeof AuthenticatedNewsIdRoute
+  '/state/$id': typeof AuthenticatedStateIdRoute
   '/topics/$slug': typeof AuthenticatedTopicsSlugRoute
   '/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
   '/api/public/hooks/ai-brain': typeof ApiPublicHooksAiBrainRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
+  '/api/public/hooks/regional-intel': typeof ApiPublicHooksRegionalIntelRoute
   '/api/public/hooks/social-ingest': typeof ApiPublicHooksSocialIngestRoute
   '/api/public/hooks/trends-ingest': typeof ApiPublicHooksTrendsIngestRoute
 }
@@ -182,20 +223,25 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/ai-insights': typeof AuthenticatedAiInsightsRoute
+  '/_authenticated/compare': typeof AuthenticatedCompareRoute
   '/_authenticated/daily-brief': typeof AuthenticatedDailyBriefRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/hashtags': typeof AuthenticatedHashtagsRoute
   '/_authenticated/news': typeof AuthenticatedNewsRouteWithChildren
   '/_authenticated/provider-health': typeof AuthenticatedProviderHealthRoute
+  '/_authenticated/regions': typeof AuthenticatedRegionsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/states': typeof AuthenticatedStatesRoute
   '/_authenticated/topics': typeof AuthenticatedTopicsRouteWithChildren
   '/_authenticated/trending': typeof AuthenticatedTrendingRoute
+  '/_authenticated/lga/$id': typeof AuthenticatedLgaIdRoute
   '/_authenticated/news/$id': typeof AuthenticatedNewsIdRoute
+  '/_authenticated/state/$id': typeof AuthenticatedStateIdRoute
   '/_authenticated/topics/$slug': typeof AuthenticatedTopicsSlugRoute
   '/_authenticated/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
   '/api/public/hooks/ai-brain': typeof ApiPublicHooksAiBrainRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
+  '/api/public/hooks/regional-intel': typeof ApiPublicHooksRegionalIntelRoute
   '/api/public/hooks/social-ingest': typeof ApiPublicHooksSocialIngestRoute
   '/api/public/hooks/trends-ingest': typeof ApiPublicHooksTrendsIngestRoute
 }
@@ -205,20 +251,25 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/ai-insights'
+    | '/compare'
     | '/daily-brief'
     | '/dashboard'
     | '/hashtags'
     | '/news'
     | '/provider-health'
+    | '/regions'
     | '/settings'
     | '/states'
     | '/topics'
     | '/trending'
+    | '/lga/$id'
     | '/news/$id'
+    | '/state/$id'
     | '/topics/$slug'
     | '/news/cluster/$id'
     | '/api/public/hooks/ai-brain'
     | '/api/public/hooks/ingest'
+    | '/api/public/hooks/regional-intel'
     | '/api/public/hooks/social-ingest'
     | '/api/public/hooks/trends-ingest'
   fileRoutesByTo: FileRoutesByTo
@@ -226,20 +277,25 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/ai-insights'
+    | '/compare'
     | '/daily-brief'
     | '/dashboard'
     | '/hashtags'
     | '/news'
     | '/provider-health'
+    | '/regions'
     | '/settings'
     | '/states'
     | '/topics'
     | '/trending'
+    | '/lga/$id'
     | '/news/$id'
+    | '/state/$id'
     | '/topics/$slug'
     | '/news/cluster/$id'
     | '/api/public/hooks/ai-brain'
     | '/api/public/hooks/ingest'
+    | '/api/public/hooks/regional-intel'
     | '/api/public/hooks/social-ingest'
     | '/api/public/hooks/trends-ingest'
   id:
@@ -248,20 +304,25 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/ai-insights'
+    | '/_authenticated/compare'
     | '/_authenticated/daily-brief'
     | '/_authenticated/dashboard'
     | '/_authenticated/hashtags'
     | '/_authenticated/news'
     | '/_authenticated/provider-health'
+    | '/_authenticated/regions'
     | '/_authenticated/settings'
     | '/_authenticated/states'
     | '/_authenticated/topics'
     | '/_authenticated/trending'
+    | '/_authenticated/lga/$id'
     | '/_authenticated/news/$id'
+    | '/_authenticated/state/$id'
     | '/_authenticated/topics/$slug'
     | '/_authenticated/news/cluster/$id'
     | '/api/public/hooks/ai-brain'
     | '/api/public/hooks/ingest'
+    | '/api/public/hooks/regional-intel'
     | '/api/public/hooks/social-ingest'
     | '/api/public/hooks/trends-ingest'
   fileRoutesById: FileRoutesById
@@ -272,6 +333,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ApiPublicHooksAiBrainRoute: typeof ApiPublicHooksAiBrainRoute
   ApiPublicHooksIngestRoute: typeof ApiPublicHooksIngestRoute
+  ApiPublicHooksRegionalIntelRoute: typeof ApiPublicHooksRegionalIntelRoute
   ApiPublicHooksSocialIngestRoute: typeof ApiPublicHooksSocialIngestRoute
   ApiPublicHooksTrendsIngestRoute: typeof ApiPublicHooksTrendsIngestRoute
 }
@@ -327,6 +389,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/regions': {
+      id: '/_authenticated/regions'
+      path: '/regions'
+      fullPath: '/regions'
+      preLoaderRoute: typeof AuthenticatedRegionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/provider-health': {
       id: '/_authenticated/provider-health'
       path: '/provider-health'
@@ -362,6 +431,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDailyBriefRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/compare': {
+      id: '/_authenticated/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof AuthenticatedCompareRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/ai-insights': {
       id: '/_authenticated/ai-insights'
       path: '/ai-insights'
@@ -376,12 +452,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTopicsSlugRouteImport
       parentRoute: typeof AuthenticatedTopicsRoute
     }
+    '/_authenticated/state/$id': {
+      id: '/_authenticated/state/$id'
+      path: '/state/$id'
+      fullPath: '/state/$id'
+      preLoaderRoute: typeof AuthenticatedStateIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/news/$id': {
       id: '/_authenticated/news/$id'
       path: '/$id'
       fullPath: '/news/$id'
       preLoaderRoute: typeof AuthenticatedNewsIdRouteImport
       parentRoute: typeof AuthenticatedNewsRoute
+    }
+    '/_authenticated/lga/$id': {
+      id: '/_authenticated/lga/$id'
+      path: '/lga/$id'
+      fullPath: '/lga/$id'
+      preLoaderRoute: typeof AuthenticatedLgaIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/api/public/hooks/trends-ingest': {
       id: '/api/public/hooks/trends-ingest'
@@ -395,6 +485,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/hooks/social-ingest'
       fullPath: '/api/public/hooks/social-ingest'
       preLoaderRoute: typeof ApiPublicHooksSocialIngestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/regional-intel': {
+      id: '/api/public/hooks/regional-intel'
+      path: '/api/public/hooks/regional-intel'
+      fullPath: '/api/public/hooks/regional-intel'
+      preLoaderRoute: typeof ApiPublicHooksRegionalIntelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/hooks/ingest': {
@@ -447,28 +544,36 @@ const AuthenticatedTopicsRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAiInsightsRoute: typeof AuthenticatedAiInsightsRoute
+  AuthenticatedCompareRoute: typeof AuthenticatedCompareRoute
   AuthenticatedDailyBriefRoute: typeof AuthenticatedDailyBriefRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedHashtagsRoute: typeof AuthenticatedHashtagsRoute
   AuthenticatedNewsRoute: typeof AuthenticatedNewsRouteWithChildren
   AuthenticatedProviderHealthRoute: typeof AuthenticatedProviderHealthRoute
+  AuthenticatedRegionsRoute: typeof AuthenticatedRegionsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedStatesRoute: typeof AuthenticatedStatesRoute
   AuthenticatedTopicsRoute: typeof AuthenticatedTopicsRouteWithChildren
   AuthenticatedTrendingRoute: typeof AuthenticatedTrendingRoute
+  AuthenticatedLgaIdRoute: typeof AuthenticatedLgaIdRoute
+  AuthenticatedStateIdRoute: typeof AuthenticatedStateIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAiInsightsRoute: AuthenticatedAiInsightsRoute,
+  AuthenticatedCompareRoute: AuthenticatedCompareRoute,
   AuthenticatedDailyBriefRoute: AuthenticatedDailyBriefRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedHashtagsRoute: AuthenticatedHashtagsRoute,
   AuthenticatedNewsRoute: AuthenticatedNewsRouteWithChildren,
   AuthenticatedProviderHealthRoute: AuthenticatedProviderHealthRoute,
+  AuthenticatedRegionsRoute: AuthenticatedRegionsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedStatesRoute: AuthenticatedStatesRoute,
   AuthenticatedTopicsRoute: AuthenticatedTopicsRouteWithChildren,
   AuthenticatedTrendingRoute: AuthenticatedTrendingRoute,
+  AuthenticatedLgaIdRoute: AuthenticatedLgaIdRoute,
+  AuthenticatedStateIdRoute: AuthenticatedStateIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -480,6 +585,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ApiPublicHooksAiBrainRoute: ApiPublicHooksAiBrainRoute,
   ApiPublicHooksIngestRoute: ApiPublicHooksIngestRoute,
+  ApiPublicHooksRegionalIntelRoute: ApiPublicHooksRegionalIntelRoute,
   ApiPublicHooksSocialIngestRoute: ApiPublicHooksSocialIngestRoute,
   ApiPublicHooksTrendsIngestRoute: ApiPublicHooksTrendsIngestRoute,
 }
