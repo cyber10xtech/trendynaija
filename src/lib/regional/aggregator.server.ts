@@ -177,14 +177,21 @@ export async function rebuildRegionalStats(opts: { windows?: WindowKey[] } = {})
       const topicIds = Array.from(new Set((topicLocs ?? []).map((r) => r.topic_id))).slice(0, 30);
       const topicRows: Array<Record<string, unknown>> = [];
       for (const topicId of topicIds) {
-        // Count articles and signals for this topic in this state
-        const { count: tNews } = await supabaseAdmin
-          .from("news_articles").select("id", { count: "exact", head: true })
-          .eq("state_id", s.id).eq("topic_id", topicId).gte("published_at", windowStart);
+        // News clusters for this topic in this state
+        const { data: clusterRows } = await supabaseAdmin
+          .from("article_clusters").select("id").eq("topic_id", topicId).eq("state_id", s.id);
+        const clusterIds = (clusterRows ?? []).map((r) => r.id);
+        let tNews = 0;
+        if (clusterIds.length > 0) {
+          const { count } = await supabaseAdmin
+            .from("news_articles").select("id", { count: "exact", head: true })
+            .in("cluster_id", clusterIds).gte("published_at", windowStart);
+          tNews = Number(count ?? 0);
+        }
         const { count: tSocial } = await supabaseAdmin
           .from("social_signals").select("id", { count: "exact", head: true })
           .eq("state_id", s.id).eq("topic_id", topicId).gte("published_at", windowStart);
-        const tTotal = Number(tNews ?? 0) + Number(tSocial ?? 0);
+        const tTotal = tNews + Number(tSocial ?? 0);
         if (tTotal === 0) continue;
         const tCounts: Counts = {
           news: Number(tNews ?? 0), social: Number(tSocial ?? 0),
