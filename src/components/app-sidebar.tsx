@@ -12,7 +12,9 @@ const nav = [
   { to: "/news", label: "News", icon: Newspaper },
   { to: "/topics", label: "Topics", icon: Tags },
   { to: "/hashtags", label: "Hashtags", icon: Hash },
+  { to: "/copilot", label: "AI Copilot", icon: MessageSquare },
   { to: "/ai-insights", label: "AI Intelligence", icon: Sparkles },
+
   { to: "/daily-brief", label: "Daily Brief", icon: FileText },
   { to: "/regions", label: "Regions", icon: Globe },
   { to: "/compare", label: "Compare", icon: GitCompare },
