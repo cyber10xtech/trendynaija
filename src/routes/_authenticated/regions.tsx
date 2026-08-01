@@ -81,14 +81,15 @@ function RegionsPage() {
         <Widget title="Regional alerts" subtitle="Cross-state spread, spikes, migrations">
           {alerts.data && alerts.data.length > 0 ? (
             <ul className="space-y-2">
-              {alerts.data.slice(0, 10).map((a: Record<string, unknown>) => (
-                <li key={String(a.id)} className="p-2 rounded-md bg-muted/30">
-                  <div className="text-sm font-medium">{String(a.title)}</div>
+              {alerts.data.slice(0, 10).map((a) => (
+                <li key={a.id} className="p-2 rounded-md bg-muted/30">
+                  <div className="text-sm font-medium">{a.title}</div>
                   <div className="text-[10px] text-muted-foreground">
-                    {String(a.alert_type)} · {String(a.severity)}
+                    {a.alert_type} · {a.severity}
                   </div>
                 </li>
               ))}
+
             </ul>
           ) : (
             <EmptyState icon={<TrendingUp className="w-5 h-5 text-muted-foreground" />} title="No alerts" description="Alerts appear when regional patterns are detected." />

@@ -276,6 +276,95 @@ export type Database = {
           },
         ]
       }
+      copilot_conversations: {
+        Row: {
+          archived: boolean
+          created_at: string
+          id: string
+          last_message_at: string | null
+          message_count: number
+          pinned: boolean
+          share_token: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          archived?: boolean
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          message_count?: number
+          pinned?: boolean
+          share_token?: string | null
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          archived?: boolean
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          message_count?: number
+          pinned?: boolean
+          share_token?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      copilot_messages: {
+        Row: {
+          ai_message_id: string | null
+          confidence: number | null
+          content: string
+          conversation_id: string
+          created_at: string
+          evidence: Json
+          id: string
+          model: string | null
+          parts: Json
+          role: string
+          user_id: string
+        }
+        Insert: {
+          ai_message_id?: string | null
+          confidence?: number | null
+          content?: string
+          conversation_id: string
+          created_at?: string
+          evidence?: Json
+          id?: string
+          model?: string | null
+          parts?: Json
+          role: string
+          user_id: string
+        }
+        Update: {
+          ai_message_id?: string | null
+          confidence?: number | null
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          evidence?: Json
+          id?: string
+          model?: string | null
+          parts?: Json
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "copilot_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "copilot_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       daily_briefs: {
         Row: {
           brief_date: string
@@ -938,6 +1027,41 @@ export type Database = {
           },
         ]
       }
+      provider_credentials: {
+        Row: {
+          created_at: string
+          credentials: Json
+          id: string
+          source_id: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          credentials?: Json
+          id?: string
+          source_id: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          credentials?: Json
+          id?: string
+          source_id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_credentials_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: true
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       provider_logs: {
         Row: {
           created_at: string
@@ -1455,8 +1579,10 @@ export type Database = {
       }
       sources: {
         Row: {
+          auth_configured: boolean
           base_url: string | null
           created_at: string
+          credential_keys: string[]
           enabled: boolean
           id: string
           key: string
@@ -1464,13 +1590,16 @@ export type Database = {
           last_error: string | null
           last_sync_at: string | null
           name: string
+          requires_auth: boolean
           retry_count: number
           status: Database["public"]["Enums"]["provider_status"]
           updated_at: string
         }
         Insert: {
+          auth_configured?: boolean
           base_url?: string | null
           created_at?: string
+          credential_keys?: string[]
           enabled?: boolean
           id?: string
           key: string
@@ -1478,13 +1607,16 @@ export type Database = {
           last_error?: string | null
           last_sync_at?: string | null
           name: string
+          requires_auth?: boolean
           retry_count?: number
           status?: Database["public"]["Enums"]["provider_status"]
           updated_at?: string
         }
         Update: {
+          auth_configured?: boolean
           base_url?: string | null
           created_at?: string
+          credential_keys?: string[]
           enabled?: boolean
           id?: string
           key?: string
@@ -1492,6 +1624,7 @@ export type Database = {
           last_error?: string | null
           last_sync_at?: string | null
           name?: string
+          requires_auth?: boolean
           retry_count?: number
           status?: Database["public"]["Enums"]["provider_status"]
           updated_at?: string
