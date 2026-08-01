@@ -88,7 +88,7 @@ export const Route = createFileRoute("/api/copilot")({
           const result = streamText({
             model: gateway(COPILOT_MODEL),
             system,
-            messages: convertToModelMessages(messages),
+            messages: await convertToModelMessages(messages),
             providerOptions: { lovable: { reasoningEffort: "none" } },
           });
 
