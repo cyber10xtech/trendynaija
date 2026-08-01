@@ -118,12 +118,13 @@ function StatePage() {
         <Widget title="Alerts">
           {overview.data?.alerts && overview.data.alerts.length > 0 ? (
             <ul className="space-y-2">
-              {overview.data.alerts.map((a: Record<string, unknown>) => (
-                <li key={String(a.id)} className="p-2 rounded-md bg-muted/30">
-                  <div className="text-sm font-medium">{String(a.title)}</div>
-                  <div className="text-[10px] text-muted-foreground">{String(a.alert_type)}</div>
+              {overview.data.alerts.map((a) => (
+                <li key={a.id} className="p-2 rounded-md bg-muted/30">
+                  <div className="text-sm font-medium">{a.title}</div>
+                  <div className="text-[10px] text-muted-foreground">{a.alert_type}</div>
                 </li>
               ))}
+
             </ul>
           ) : <EmptyState title="No alerts" />}
         </Widget>
