@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, TrendingUp, Newspaper, Hash, Sparkles, MapPin,
-  Settings, Activity, Tags, LogOut, Flame, FileText, GitCompare, Globe,
+  Settings, Activity, Tags, LogOut, Flame, FileText, GitCompare, Globe, MessageSquare,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";

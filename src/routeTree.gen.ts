@@ -26,10 +26,12 @@ import { Route as AuthenticatedDailyBriefRouteImport } from './routes/_authentic
 import { Route as AuthenticatedCopilotRouteImport } from './routes/_authenticated/copilot'
 import { Route as AuthenticatedCompareRouteImport } from './routes/_authenticated/compare'
 import { Route as AuthenticatedAiInsightsRouteImport } from './routes/_authenticated/ai-insights'
+import { Route as AuthenticatedCopilotIndexRouteImport } from './routes/_authenticated/copilot.index'
 import { Route as AuthenticatedTopicsSlugRouteImport } from './routes/_authenticated/topics.$slug'
 import { Route as AuthenticatedStateIdRouteImport } from './routes/_authenticated/state.$id'
 import { Route as AuthenticatedNewsIdRouteImport } from './routes/_authenticated/news.$id'
 import { Route as AuthenticatedLgaIdRouteImport } from './routes/_authenticated/lga.$id'
+import { Route as AuthenticatedCopilotThreadIdRouteImport } from './routes/_authenticated/copilot.$threadId'
 import { Route as ApiPublicHooksTrendsIngestRouteImport } from './routes/api/public/hooks/trends-ingest'
 import { Route as ApiPublicHooksSocialIngestRouteImport } from './routes/api/public/hooks/social-ingest'
 import { Route as ApiPublicHooksRegionalIntelRouteImport } from './routes/api/public/hooks/regional-intel'
@@ -122,6 +124,12 @@ const AuthenticatedAiInsightsRoute = AuthenticatedAiInsightsRouteImport.update({
   path: '/ai-insights',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCopilotIndexRoute =
+  AuthenticatedCopilotIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedCopilotRoute,
+  } as any)
 const AuthenticatedTopicsSlugRoute = AuthenticatedTopicsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -142,6 +150,12 @@ const AuthenticatedLgaIdRoute = AuthenticatedLgaIdRouteImport.update({
   path: '/lga/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCopilotThreadIdRoute =
+  AuthenticatedCopilotThreadIdRouteImport.update({
+    id: '/$threadId',
+    path: '/$threadId',
+    getParentRoute: () => AuthenticatedCopilotRoute,
+  } as any)
 const ApiPublicHooksTrendsIngestRoute =
   ApiPublicHooksTrendsIngestRouteImport.update({
     id: '/api/public/hooks/trends-ingest',
@@ -182,7 +196,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/ai-insights': typeof AuthenticatedAiInsightsRoute
   '/compare': typeof AuthenticatedCompareRoute
-  '/copilot': typeof AuthenticatedCopilotRoute
+  '/copilot': typeof AuthenticatedCopilotRouteWithChildren
   '/daily-brief': typeof AuthenticatedDailyBriefRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/hashtags': typeof AuthenticatedHashtagsRoute
@@ -194,10 +208,12 @@ export interface FileRoutesByFullPath {
   '/topics': typeof AuthenticatedTopicsRouteWithChildren
   '/trending': typeof AuthenticatedTrendingRoute
   '/api/copilot': typeof ApiCopilotRoute
+  '/copilot/$threadId': typeof AuthenticatedCopilotThreadIdRoute
   '/lga/$id': typeof AuthenticatedLgaIdRoute
   '/news/$id': typeof AuthenticatedNewsIdRoute
   '/state/$id': typeof AuthenticatedStateIdRoute
   '/topics/$slug': typeof AuthenticatedTopicsSlugRoute
+  '/copilot/': typeof AuthenticatedCopilotIndexRoute
   '/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
   '/api/public/hooks/ai-brain': typeof ApiPublicHooksAiBrainRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
@@ -210,7 +226,6 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/ai-insights': typeof AuthenticatedAiInsightsRoute
   '/compare': typeof AuthenticatedCompareRoute
-  '/copilot': typeof AuthenticatedCopilotRoute
   '/daily-brief': typeof AuthenticatedDailyBriefRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/hashtags': typeof AuthenticatedHashtagsRoute
@@ -222,10 +237,12 @@ export interface FileRoutesByTo {
   '/topics': typeof AuthenticatedTopicsRouteWithChildren
   '/trending': typeof AuthenticatedTrendingRoute
   '/api/copilot': typeof ApiCopilotRoute
+  '/copilot/$threadId': typeof AuthenticatedCopilotThreadIdRoute
   '/lga/$id': typeof AuthenticatedLgaIdRoute
   '/news/$id': typeof AuthenticatedNewsIdRoute
   '/state/$id': typeof AuthenticatedStateIdRoute
   '/topics/$slug': typeof AuthenticatedTopicsSlugRoute
+  '/copilot': typeof AuthenticatedCopilotIndexRoute
   '/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
   '/api/public/hooks/ai-brain': typeof ApiPublicHooksAiBrainRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
@@ -240,7 +257,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/ai-insights': typeof AuthenticatedAiInsightsRoute
   '/_authenticated/compare': typeof AuthenticatedCompareRoute
-  '/_authenticated/copilot': typeof AuthenticatedCopilotRoute
+  '/_authenticated/copilot': typeof AuthenticatedCopilotRouteWithChildren
   '/_authenticated/daily-brief': typeof AuthenticatedDailyBriefRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/hashtags': typeof AuthenticatedHashtagsRoute
@@ -252,10 +269,12 @@ export interface FileRoutesById {
   '/_authenticated/topics': typeof AuthenticatedTopicsRouteWithChildren
   '/_authenticated/trending': typeof AuthenticatedTrendingRoute
   '/api/copilot': typeof ApiCopilotRoute
+  '/_authenticated/copilot/$threadId': typeof AuthenticatedCopilotThreadIdRoute
   '/_authenticated/lga/$id': typeof AuthenticatedLgaIdRoute
   '/_authenticated/news/$id': typeof AuthenticatedNewsIdRoute
   '/_authenticated/state/$id': typeof AuthenticatedStateIdRoute
   '/_authenticated/topics/$slug': typeof AuthenticatedTopicsSlugRoute
+  '/_authenticated/copilot/': typeof AuthenticatedCopilotIndexRoute
   '/_authenticated/news/cluster/$id': typeof AuthenticatedNewsClusterIdRoute
   '/api/public/hooks/ai-brain': typeof ApiPublicHooksAiBrainRoute
   '/api/public/hooks/ingest': typeof ApiPublicHooksIngestRoute
@@ -282,10 +301,12 @@ export interface FileRouteTypes {
     | '/topics'
     | '/trending'
     | '/api/copilot'
+    | '/copilot/$threadId'
     | '/lga/$id'
     | '/news/$id'
     | '/state/$id'
     | '/topics/$slug'
+    | '/copilot/'
     | '/news/cluster/$id'
     | '/api/public/hooks/ai-brain'
     | '/api/public/hooks/ingest'
@@ -298,7 +319,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/ai-insights'
     | '/compare'
-    | '/copilot'
     | '/daily-brief'
     | '/dashboard'
     | '/hashtags'
@@ -310,10 +330,12 @@ export interface FileRouteTypes {
     | '/topics'
     | '/trending'
     | '/api/copilot'
+    | '/copilot/$threadId'
     | '/lga/$id'
     | '/news/$id'
     | '/state/$id'
     | '/topics/$slug'
+    | '/copilot'
     | '/news/cluster/$id'
     | '/api/public/hooks/ai-brain'
     | '/api/public/hooks/ingest'
@@ -339,10 +361,12 @@ export interface FileRouteTypes {
     | '/_authenticated/topics'
     | '/_authenticated/trending'
     | '/api/copilot'
+    | '/_authenticated/copilot/$threadId'
     | '/_authenticated/lga/$id'
     | '/_authenticated/news/$id'
     | '/_authenticated/state/$id'
     | '/_authenticated/topics/$slug'
+    | '/_authenticated/copilot/'
     | '/_authenticated/news/cluster/$id'
     | '/api/public/hooks/ai-brain'
     | '/api/public/hooks/ingest'
@@ -484,6 +508,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAiInsightsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/copilot/': {
+      id: '/_authenticated/copilot/'
+      path: '/'
+      fullPath: '/copilot/'
+      preLoaderRoute: typeof AuthenticatedCopilotIndexRouteImport
+      parentRoute: typeof AuthenticatedCopilotRoute
+    }
     '/_authenticated/topics/$slug': {
       id: '/_authenticated/topics/$slug'
       path: '/$slug'
@@ -511,6 +542,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/lga/$id'
       preLoaderRoute: typeof AuthenticatedLgaIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/copilot/$threadId': {
+      id: '/_authenticated/copilot/$threadId'
+      path: '/$threadId'
+      fullPath: '/copilot/$threadId'
+      preLoaderRoute: typeof AuthenticatedCopilotThreadIdRouteImport
+      parentRoute: typeof AuthenticatedCopilotRoute
     }
     '/api/public/hooks/trends-ingest': {
       id: '/api/public/hooks/trends-ingest'
@@ -557,6 +595,19 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedCopilotRouteChildren {
+  AuthenticatedCopilotThreadIdRoute: typeof AuthenticatedCopilotThreadIdRoute
+  AuthenticatedCopilotIndexRoute: typeof AuthenticatedCopilotIndexRoute
+}
+
+const AuthenticatedCopilotRouteChildren: AuthenticatedCopilotRouteChildren = {
+  AuthenticatedCopilotThreadIdRoute: AuthenticatedCopilotThreadIdRoute,
+  AuthenticatedCopilotIndexRoute: AuthenticatedCopilotIndexRoute,
+}
+
+const AuthenticatedCopilotRouteWithChildren =
+  AuthenticatedCopilotRoute._addFileChildren(AuthenticatedCopilotRouteChildren)
+
 interface AuthenticatedNewsRouteChildren {
   AuthenticatedNewsIdRoute: typeof AuthenticatedNewsIdRoute
   AuthenticatedNewsClusterIdRoute: typeof AuthenticatedNewsClusterIdRoute
@@ -584,7 +635,7 @@ const AuthenticatedTopicsRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAiInsightsRoute: typeof AuthenticatedAiInsightsRoute
   AuthenticatedCompareRoute: typeof AuthenticatedCompareRoute
-  AuthenticatedCopilotRoute: typeof AuthenticatedCopilotRoute
+  AuthenticatedCopilotRoute: typeof AuthenticatedCopilotRouteWithChildren
   AuthenticatedDailyBriefRoute: typeof AuthenticatedDailyBriefRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedHashtagsRoute: typeof AuthenticatedHashtagsRoute
@@ -602,7 +653,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAiInsightsRoute: AuthenticatedAiInsightsRoute,
   AuthenticatedCompareRoute: AuthenticatedCompareRoute,
-  AuthenticatedCopilotRoute: AuthenticatedCopilotRoute,
+  AuthenticatedCopilotRoute: AuthenticatedCopilotRouteWithChildren,
   AuthenticatedDailyBriefRoute: AuthenticatedDailyBriefRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedHashtagsRoute: AuthenticatedHashtagsRoute,
