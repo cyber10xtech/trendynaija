@@ -27,16 +27,36 @@ export interface StoredMessage {
 
 export const listConversations = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }): Promise<Conversation[]> => {
-    const { data, error } = await context.supabase
+  .inputValidator((i: unknown) => {
+    const v = (i ?? {}) as { archived?: boolean };
+    return { archived: !!v.archived };
+  })
+  .handler(async ({ data, context }): Promise<Conversation[]> => {
+    const { data: rows, error } = await context.supabase
       .from("copilot_conversations")
       .select("id, title, pinned, archived, message_count, last_message_at, created_at, updated_at")
-      .eq("archived", false)
+      .eq("archived", data.archived)
       .order("pinned", { ascending: false })
       .order("updated_at", { ascending: false })
-      .limit(200);
+      .limit(100);
     if (error) throw new Error(error.message);
-    return (data ?? []) as Conversation[];
+    return (rows ?? []) as Conversation[];
+  });
+
+export const setConversationArchived = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => {
+    const v = i as { id: string; archived: boolean };
+    if (!v?.id) throw new Error("id required");
+    return { id: v.id, archived: !!v.archived };
+  })
+  .handler(async ({ data, context }): Promise<{ ok: true }> => {
+    const { error } = await context.supabase
+      .from("copilot_conversations")
+      .update({ archived: data.archived })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
   });
 
 export const createConversation = createServerFn({ method: "POST" })
