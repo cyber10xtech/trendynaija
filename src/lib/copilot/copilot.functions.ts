@@ -27,16 +27,36 @@ export interface StoredMessage {
 
 export const listConversations = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }): Promise<Conversation[]> => {
-    const { data, error } = await context.supabase
+  .inputValidator((i: unknown) => {
+    const v = (i ?? {}) as { archived?: boolean };
+    return { archived: !!v.archived };
+  })
+  .handler(async ({ data, context }): Promise<Conversation[]> => {
+    const { data: rows, error } = await context.supabase
       .from("copilot_conversations")
       .select("id, title, pinned, archived, message_count, last_message_at, created_at, updated_at")
-      .eq("archived", false)
+      .eq("archived", data.archived)
       .order("pinned", { ascending: false })
       .order("updated_at", { ascending: false })
-      .limit(200);
+      .limit(100);
     if (error) throw new Error(error.message);
-    return (data ?? []) as Conversation[];
+    return (rows ?? []) as Conversation[];
+  });
+
+export const setConversationArchived = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => {
+    const v = i as { id: string; archived: boolean };
+    if (!v?.id) throw new Error("id required");
+    return { id: v.id, archived: !!v.archived };
+  })
+  .handler(async ({ data, context }): Promise<{ ok: true }> => {
+    const { error } = await context.supabase
+      .from("copilot_conversations")
+      .update({ archived: data.archived })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
   });
 
 export const createConversation = createServerFn({ method: "POST" })
@@ -69,14 +89,16 @@ export const getConversation = createServerFn({ method: "GET" })
       .eq("id", data.id)
       .maybeSingle();
     if (!conv) return { conversation: null, messages: [] };
+    // Load only the most recent slice; older turns stay in the database.
     const { data: msgs } = await context.supabase
       .from("copilot_messages")
       .select("id, role, content, parts, evidence, created_at")
       .eq("conversation_id", data.id)
-      .order("created_at", { ascending: true });
+      .order("created_at", { ascending: false })
+      .limit(60);
     return {
       conversation: conv as Conversation,
-      messages: (msgs ?? []).map((m) => ({
+      messages: (msgs ?? []).slice().reverse().map((m) => ({
         id: m.id,
         role: m.role as StoredMessage["role"],
         content: m.content,

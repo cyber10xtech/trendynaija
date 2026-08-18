@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { AppSidebar } from "./app-sidebar";
+import { AppSidebar, MobileNav } from "./app-sidebar";
 
 interface PageShellProps {
   title: string;
@@ -10,21 +10,24 @@ interface PageShellProps {
 
 export function PageShell({ title, description, actions, children }: PageShellProps) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <AppSidebar />
       <div className="md:pl-64">
         <header className="sticky top-0 z-10 bg-background/85 backdrop-blur-xl border-b border-border">
-          <div className="max-w-[1400px] mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
-            <div>
-              <h1 className="text-lg font-semibold tracking-tight text-foreground">{title}</h1>
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 min-h-16 py-3 flex items-center gap-3">
+            <MobileNav />
+            <div className="min-w-0 flex-1">
+              <h1 className="text-base sm:text-lg font-semibold tracking-tight text-foreground truncate">
+                {title}
+              </h1>
               {description && (
-                <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+                <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{description}</p>
               )}
             </div>
-            {actions}
+            {actions && <div className="shrink-0 flex items-center gap-2">{actions}</div>}
           </div>
         </header>
-        <main className="max-w-[1400px] mx-auto px-6 lg:px-10 py-8">{children}</main>
+        <main className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8">{children}</main>
       </div>
     </div>
   );

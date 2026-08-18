@@ -74,6 +74,17 @@ const SUGGESTIONS = [
   "Summarise today's biggest story cluster.",
   "Which hashtags are gaining the most momentum?",
   "Compare news volume across the top states.",
+  "What is unique about Imo State today?",
+  "Which topics are emerging fastest this week?",
+  "Give me today's executive brief for Nigeria.",
+  "Why is the top topic trending?",
+];
+
+const FOLLOW_UPS = [
+  "Why is this trending?",
+  "Show the sources behind this.",
+  "How does this compare to yesterday?",
+  "What could happen next?",
 ];
 
 function ChatWindow({
