@@ -89,14 +89,16 @@ export const getConversation = createServerFn({ method: "GET" })
       .eq("id", data.id)
       .maybeSingle();
     if (!conv) return { conversation: null, messages: [] };
+    // Load only the most recent slice; older turns stay in the database.
     const { data: msgs } = await context.supabase
       .from("copilot_messages")
       .select("id, role, content, parts, evidence, created_at")
       .eq("conversation_id", data.id)
-      .order("created_at", { ascending: true });
+      .order("created_at", { ascending: false })
+      .limit(60);
     return {
       conversation: conv as Conversation,
-      messages: (msgs ?? []).map((m) => ({
+      messages: (msgs ?? []).slice().reverse().map((m) => ({
         id: m.id,
         role: m.role as StoredMessage["role"],
         content: m.content,
