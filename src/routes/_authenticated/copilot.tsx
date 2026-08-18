@@ -270,7 +270,7 @@ function CopilotLayout() {
               Save
             </Button>
           </DialogFooter>
-        </DialogFooter>
+        </DialogContent>
       </Dialog>
     </div>
   );
