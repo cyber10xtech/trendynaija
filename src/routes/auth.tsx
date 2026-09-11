@@ -1,4 +1,4 @@
-import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
+import { ClientOnly, createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Flame } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,7 +20,11 @@ export const Route = createFileRoute("/auth")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: AuthPage,
+  component: () => (
+    <ClientOnly fallback={<div className="min-h-screen bg-background" />}>
+      <AuthPage />
+    </ClientOnly>
+  ),
 });
 
 function AuthPage() {
