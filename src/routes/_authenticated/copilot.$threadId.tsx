@@ -123,7 +123,7 @@ function ChatWindow({
   const busy = status === "submitted" || status === "streaming";
 
   useEffect(() => {
-    if (!busy) textareaRef.current?.focus();
+    if (!busy && window.innerWidth >= 768) textareaRef.current?.focus();
   }, [busy, threadId]);
 
   const ask = (text: string) => {
@@ -131,27 +131,32 @@ function ChatWindow({
     void sendMessage({ text: text.trim() });
   };
 
+  const lastMessage = messages[messages.length - 1];
+  const showFollowUps = !busy && lastMessage?.role === "assistant";
+
   return (
     <div className="flex-1 min-h-0 flex flex-col">
-      <header className="h-14 shrink-0 flex items-center gap-2 px-5 border-b border-border">
-        <Flame className="w-4 h-4 text-primary" />
-        <h1 className="text-sm font-medium truncate">{title}</h1>
-        <Badge variant="secondary" className="text-[10px] ml-auto">grounded · cited</Badge>
+      <header className="h-12 sm:h-14 shrink-0 flex items-center gap-2 px-4 sm:px-5 border-b border-border">
+        <Flame className="w-4 h-4 shrink-0 text-primary" />
+        <h1 className="text-sm font-medium truncate min-w-0">{title}</h1>
+        <Badge variant="secondary" className="hidden sm:inline-flex text-[10px] ml-auto shrink-0">
+          grounded · cited
+        </Badge>
       </header>
 
       <Conversation className="flex-1 min-h-0">
-        <ConversationContent className="max-w-3xl mx-auto w-full">
+        <ConversationContent className="max-w-3xl mx-auto w-full px-3 sm:px-4">
           {messages.length === 0 ? (
             <ConversationEmptyState
               title="Ask the Copilot"
               description="Answers come only from Trendy Naija's stored intelligence, with citation tags."
             >
-              <div className="mt-4 grid gap-2 w-full max-w-md">
+              <div className="mt-4 grid sm:grid-cols-2 gap-2 w-full max-w-xl">
                 {SUGGESTIONS.map((s) => (
                   <button
                     key={s}
                     onClick={() => ask(s)}
-                    className="text-left text-xs rounded-md border border-border px-3 py-2 hover:bg-muted/60 transition-colors"
+                    className="text-left text-xs rounded-md border border-border px-3 py-2.5 hover:bg-muted/60 active:bg-muted transition-colors"
                   >
                     {s}
                   </button>
@@ -175,18 +180,39 @@ function ChatWindow({
             })
           )}
           {status === "submitted" && <Shimmer className="text-sm">Reading the intelligence store…</Shimmer>}
+
+          {showFollowUps && (
+            <div className="flex flex-wrap gap-2 pt-1">
+              {FOLLOW_UPS.map((f) => (
+                <button
+                  key={f}
+                  onClick={() => ask(f)}
+                  className="text-[11px] rounded-full border border-border px-3 py-1.5 text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-colors"
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+          )}
         </ConversationContent>
         <ConversationScrollButton />
       </Conversation>
 
-      <div className="shrink-0 p-4 border-t border-border">
+      <div
+        className="shrink-0 p-3 sm:p-4 border-t border-border bg-background"
+        style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+      >
         <div className="max-w-3xl mx-auto">
           <PromptInput
             onSubmit={(message) => {
               ask(message.text ?? "");
             }}
           >
-            <PromptInputTextarea ref={textareaRef} placeholder="Ask about Nigerian trends…" autoFocus />
+            <PromptInputTextarea
+              ref={textareaRef}
+              placeholder="Ask about Nigerian trends…"
+              className="text-base sm:text-sm"
+            />
             <PromptInputFooter className="justify-end">
               <PromptInputSubmit status={status} disabled={busy} />
             </PromptInputFooter>
