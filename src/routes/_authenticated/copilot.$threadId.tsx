@@ -123,7 +123,7 @@ function ChatWindow({
   const busy = status === "submitted" || status === "streaming";
 
   useEffect(() => {
-    if (!busy) textareaRef.current?.focus();
+    if (!busy && window.innerWidth >= 768) textareaRef.current?.focus();
   }, [busy, threadId]);
 
   const ask = (text: string) => {
