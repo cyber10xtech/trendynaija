@@ -131,27 +131,32 @@ function ChatWindow({
     void sendMessage({ text: text.trim() });
   };
 
+  const lastMessage = messages[messages.length - 1];
+  const showFollowUps = !busy && lastMessage?.role === "assistant";
+
   return (
     <div className="flex-1 min-h-0 flex flex-col">
-      <header className="h-14 shrink-0 flex items-center gap-2 px-5 border-b border-border">
-        <Flame className="w-4 h-4 text-primary" />
-        <h1 className="text-sm font-medium truncate">{title}</h1>
-        <Badge variant="secondary" className="text-[10px] ml-auto">grounded · cited</Badge>
+      <header className="h-12 sm:h-14 shrink-0 flex items-center gap-2 px-4 sm:px-5 border-b border-border">
+        <Flame className="w-4 h-4 shrink-0 text-primary" />
+        <h1 className="text-sm font-medium truncate min-w-0">{title}</h1>
+        <Badge variant="secondary" className="hidden sm:inline-flex text-[10px] ml-auto shrink-0">
+          grounded · cited
+        </Badge>
       </header>
 
       <Conversation className="flex-1 min-h-0">
-        <ConversationContent className="max-w-3xl mx-auto w-full">
+        <ConversationContent className="max-w-3xl mx-auto w-full px-3 sm:px-4">
           {messages.length === 0 ? (
             <ConversationEmptyState
               title="Ask the Copilot"
               description="Answers come only from Trendy Naija's stored intelligence, with citation tags."
             >
-              <div className="mt-4 grid gap-2 w-full max-w-md">
+              <div className="mt-4 grid sm:grid-cols-2 gap-2 w-full max-w-xl">
                 {SUGGESTIONS.map((s) => (
                   <button
                     key={s}
                     onClick={() => ask(s)}
-                    className="text-left text-xs rounded-md border border-border px-3 py-2 hover:bg-muted/60 transition-colors"
+                    className="text-left text-xs rounded-md border border-border px-3 py-2.5 hover:bg-muted/60 active:bg-muted transition-colors"
                   >
                     {s}
                   </button>
