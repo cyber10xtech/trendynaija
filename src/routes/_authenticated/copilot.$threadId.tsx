@@ -180,18 +180,39 @@ function ChatWindow({
             })
           )}
           {status === "submitted" && <Shimmer className="text-sm">Reading the intelligence store…</Shimmer>}
+
+          {showFollowUps && (
+            <div className="flex flex-wrap gap-2 pt-1">
+              {FOLLOW_UPS.map((f) => (
+                <button
+                  key={f}
+                  onClick={() => ask(f)}
+                  className="text-[11px] rounded-full border border-border px-3 py-1.5 text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-colors"
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+          )}
         </ConversationContent>
         <ConversationScrollButton />
       </Conversation>
 
-      <div className="shrink-0 p-4 border-t border-border">
+      <div
+        className="shrink-0 p-3 sm:p-4 border-t border-border bg-background"
+        style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+      >
         <div className="max-w-3xl mx-auto">
           <PromptInput
             onSubmit={(message) => {
               ask(message.text ?? "");
             }}
           >
-            <PromptInputTextarea ref={textareaRef} placeholder="Ask about Nigerian trends…" autoFocus />
+            <PromptInputTextarea
+              ref={textareaRef}
+              placeholder="Ask about Nigerian trends…"
+              className="text-base sm:text-sm"
+            />
             <PromptInputFooter className="justify-end">
               <PromptInputSubmit status={status} disabled={busy} />
             </PromptInputFooter>
